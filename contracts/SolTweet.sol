@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.4.24;
 
 import "./SafeMath.sol";
 
@@ -17,9 +17,6 @@ contract SolTweet {
     //maps follower => user they follow
     mapping (uint => bool) hasFollowed;
 
-    User[] public users;
-    Tweet[] public tweets;
-
     struct User {
         string username;
         uint followerCount;
@@ -30,24 +27,37 @@ contract SolTweet {
         uint likes;
     }
 
-    function _createUser(string memory _username) public {
+    User[] public users;
+    Tweet[] public tweets;
+    string[] public usernames;
+
+    function _getUsername(uint _idx) public returns (string memory) {
+        // return users[_idx].username;
+        return usernames[_idx];
+    }
+
+    function _createUser(string memory _username) public returns (uint) {
+        // uint id = usernames.push(_username) - 1;
+        // return 1;
         User memory newUser;
         newUser.username = _username;
-        newUser.followerCount = 0;    
+        newUser.followerCount = 0;
         uint id = (users.push(newUser)).sub(1);
         userToOwner[id] = msg.sender;
         emit NewUser(id);
+        return id;
     }
 
-    function _createTweet(uint _userId, string memory _tweetText) public {
+    function _createTweet(uint _userId, string memory _tweetText) public returns (uint) {
         require(userToOwner[_userId] == msg.sender, "unauthorized sender");
         uint id = (tweets.push(Tweet(_tweetText, 0))).sub(1);
         tweetToUserId[id] = _userId;
         // notify followers
 
         //look up all the users follwers and let them know about the new tweet
-        following[]
+        // following[];
         emit NewTweet(id, _userId);
+        return id;
     }
 
     function _likeTweet(uint _userId, uint _tweetId) public {
@@ -59,22 +69,22 @@ contract SolTweet {
 
     function _follow(uint _userId, uint _userIdToFollow) public {
         require(userToOwner[_userId] == msg.sender, "unauthorized sender");
-        bool userHasFollowed = userHasLikedTweet[uint(keccak256(abi.encodePacked(_userId, _userIdToFollow)))];
+        // bool userHasFollowed = userHasLikedTweet[uint(keccak256(abi.encodePacked(_userId, _userIdToFollow)))];
         //check that the users isn't already following
-        require(following[_userId] != _userIdToFollow, "sender is already following");
+        // require(following[_userId] != _userIdToFollow, "sender is already following");
         
         //add the follower and increase follower count
-        following[_userId] = _userIdToFollow;
+        // following[_userId] = _userIdToFollow;
         users[_userId].followerCount.add(1);
     }
 
     function _unFollow(uint _userId, uint _userIdToUnFollow) public {
         require(userToOwner[_userId] == msg.sender, "unauthorized sender");
         //check that the users is already following
-        require(following[_userId] == _userIdToUnFollow, "sender is not following");
+        // require(following[_userId] == _userIdToUnFollow, "sender is not following");
         
         //remove the follower and decrease follower count
-        delete following[_userId];
+        // delete following[_userId];
         users[_userId].followerCount.sub(1);
     }
 }
