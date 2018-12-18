@@ -11,7 +11,7 @@ SolTweet is a Twitter clone written in [Solidity](https://solidity.readthedocs.i
 
   `yarn test-frontend`
 
-  `yarn test-backend`
+  `yarn test-truffle`
 
 ## Frontend
 
