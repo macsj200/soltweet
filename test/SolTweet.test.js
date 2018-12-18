@@ -63,10 +63,10 @@ describe('SolTweet', () => {
   })
 
   it('follows user', async () => {
-
+// TODO
   })
 
   it('unfollows user', async () => {
-
+// TODO
   })
 })

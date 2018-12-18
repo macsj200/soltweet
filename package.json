@@ -13,7 +13,10 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test-truffle": "truffle test",
+    "test-frontend": "cd soltweet-frontend; yarn test",
+    "start-frontend": "cd soltweet-frontend; yarn start",
+    "test": "yarn test-truffle; yarn test-frontend"
   },
   "repository": {
     "type": "git",

@@ -61,7 +61,7 @@ contract SolTweet {
         myTweet.likes = myTweet.likes.add(1);
     }
 
-    function _follow(uint _userId, uint _userIdToFollow) public {
+    function _follow(uint _userId /*, uint _userIdToFollow */) public view {
         require(userToOwner[_userId] == msg.sender, "unauthorized sender");
         // bool userHasFollowed = userHasLikedTweet[uint(keccak256(abi.encodePacked(_userId, _userIdToFollow)))];
         //check that the users isn't already following
@@ -72,7 +72,7 @@ contract SolTweet {
         users[_userId].followerCount.add(1);
     }
 
-    function _unFollow(uint _userId, uint _userIdToUnFollow) public {
+    function _unFollow(uint _userId/*, uint _userIdToUnFollow*/) public view {
         require(userToOwner[_userId] == msg.sender, "unauthorized sender");
         //check that the users is already following
         // require(following[_userId] == _userIdToUnFollow, "sender is not following");
