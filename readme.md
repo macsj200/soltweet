@@ -1,5 +1,7 @@
 # SolTweet source code
 
+[![Build Status](https://travis-ci.com/insghost/soltweet.svg?branch=master)](https://travis-ci.com/insghost/soltweet)
+
 ## About
 SolTweet is a Twitter clone written in [Solidity](https://solidity.readthedocs.io/en/v0.5.1/). Solidity is the language used to write Smart Contracts, or programmable transactions, on the Ethereum network.
 
