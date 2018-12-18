@@ -22,8 +22,10 @@ before_install:
   - npm install -g ganache-cli truffle
 
 install:
+  - yarn cache clean &
   - yarn &
   - cd soltweet-frontend &
+  - yarn cache clean &
   - yarn
 
 script:
