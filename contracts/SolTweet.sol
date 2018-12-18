@@ -31,14 +31,7 @@ contract SolTweet {
     Tweet[] public tweets;
     string[] public usernames;
 
-    function _getUsername(uint _idx) public returns (string memory) {
-        // return users[_idx].username;
-        return usernames[_idx];
-    }
-
     function _createUser(string memory _username) public returns (uint) {
-        // uint id = usernames.push(_username) - 1;
-        // return 1;
         User memory newUser;
         newUser.username = _username;
         newUser.followerCount = 0;
@@ -64,7 +57,8 @@ contract SolTweet {
         require(userToOwner[_userId] == msg.sender, "unauthorized sender");
         bool userLikedTweet = userHasLikedTweet[uint(keccak256(abi.encodePacked(_userId, _tweetId)))];
         require(!userLikedTweet, "user already liked tweet");
-        tweets[_tweetId].likes.add(1);
+        Tweet storage myTweet = tweets[_tweetId];
+        myTweet.likes = myTweet.likes.add(1);
     }
 
     function _follow(uint _userId, uint _userIdToFollow) public {

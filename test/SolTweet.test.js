@@ -49,4 +49,24 @@ describe('SolTweet', () => {
       i++;
     }
   })
+
+  it('likes tweets', async () => {
+    const instance = await SolTweet.deployed();
+    await createUsers(instance, getFakeUsernames(2));
+    const [userAId, userBId] = [0, 1];
+    const tx = await instance._createTweet(userAId, 'fake-tweet-text');
+    const tweetId = 0;
+    await instance._likeTweet(userBId, tweetId);
+    const tweet = (await instance.tweets.call(tweetId));
+    const numLikes = tweet[1].toNumber();
+    assert(numLikes === 1, 'incorrect number of likes');
+  })
+
+  it('follows user', async () => {
+
+  })
+
+  it('unfollows user', async () => {
+
+  })
 })
