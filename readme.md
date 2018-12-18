@@ -46,6 +46,8 @@ module.exports = {
 ## Running/Compiling
 - Run unit tests see [debugging w/ truffle cli](https://www.sitepoint.com/debugging-with-truffle-cli/)
 
+  `truffle test`
+
 - Compile (run migration) see [running migrations](https://truffleframework.com/docs/truffle/getting-started/running-migrations)
 
   `truffle migrate`
