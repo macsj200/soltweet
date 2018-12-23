@@ -11,15 +11,18 @@ const json = require('./../build/contracts/SolTweet.json');
 const SolTweet = artifacts.require("SolTweet");
 
 const createUsers = async (instance, usernames) => {
-    let i = 0;
-    for(let username of usernames) {
-      const tx = await instance._createUser(username);
-      const currUser = (await instance.users.call(i));
-      let [currUsername, currFollowerCount] = currUser;
-      assert(currUsername === username, 'incorrect username');
-      assert(currFollowerCount.toNumber() === 0, 'incorrect number of followers');
-      i++;
-    }
+  let users = []
+  let i = 0;
+  for(let username of usernames) {
+    const tx = await instance._createUser(username);
+    const currUser = (await instance.users.call(i));
+    let [currUsername, currFollowerCount] = currUser;
+    assert(currUsername === username, 'incorrect username');
+    assert(currFollowerCount.toNumber() === 0, 'incorrect number of followers');
+    users.push(currUser);
+    i++;
+  }
+  return users;
 }
 
 const getFakeUsernames = (numUsernames) => {
@@ -30,69 +33,87 @@ const getFakeUsernames = (numUsernames) => {
   return fakeUsernames;
 }
 
-describe('SolTweet', () => {
-  it('creates users', async () => {
-    const instance = await SolTweet.deployed();
-    await createUsers(instance, getFakeUsernames(2));
+contract('SolTweet', (accounts) => {
+  let instance;
+  let users;
+
+  before(async () => {
+    instance = await SolTweet.deployed();
+    users = await createUsers(instance, getFakeUsernames(2));
   })
 
-  it('creates tweets', async () => {
-    const instance = await SolTweet.deployed();
-    await createUsers(instance, getFakeUsernames(2));
-    let i = 0;
-    for(let tweetText of ['fake-tweet-1', 'fake-tweet-2']) {
-      const tx = await instance._createTweet(i, tweetText);
-      assert.equal(tx.logs[0].event, 'NewTweet');
-      const currTweet = (await instance.tweets.call(i));
-      let [currTweetText, currTweetLikes] = currTweet;
-      assert(currTweetText === tweetText, 'incorrect tweetText');
-      assert(currTweetLikes.toNumber() === 0, 'incorrect number of tweet likes');
-      i++;
-    }
-  })
-
-  it('likes tweets', async () => {
-    const instance = await SolTweet.deployed();
-    await createUsers(instance, getFakeUsernames(2));
+  describe('user tests', () => {
     const [userAId, userBId] = [0, 1];
-    const tx = await instance._createTweet(userAId, 'fake-tweet-text');
-    const tweetId = 0;
-    await instance._likeTweet(userBId, tweetId);
-    const tweet = (await instance.tweets.call(tweetId));
-    const numLikes = tweet[1].toNumber();
-    assert(numLikes === 1, 'incorrect number of likes');
-  })
 
-  it('follows and unfollows user', async () => {
-    const instance = await SolTweet.deployed();
-    await createUsers(instance, getFakeUsernames(2));
-    const [userAId, userBId] = [0, 1];
-    await instance._follow(userAId, userBId);
-    let userB = (await instance.users.call(userBId));
-    let numFollowers = userB[1].toNumber();
-    assert(numFollowers === 1, 'incorrect number of followers');
+    it('creates users', async () => {
+      assert.strictEqual(users.length, 2);
+    })
 
-    let followingMappingKeys = await instance._getFollowingMappingKeys.call(userAId);
-    assert.equal(followingMappingKeys[0].toNumber(), userBId);
-    assert(await instance.followingMapping.call(userAId, userBId));
-
-    // User can't double follow
-    let err;
-    try {
+    it('follows user', async () => {
       await instance._follow(userAId, userBId);
-    } catch (e) {
-      err = e;
-    }
-    assert(err);
+      let userB = (await instance.users.call(userBId));
+      let numFollowers = userB[1].toNumber();
+      assert(numFollowers === 1, 'incorrect number of followers');
+  
+      let followingMappingKeys = await instance._getFollowingMappingKeys.call(userAId);
+      assert.equal(followingMappingKeys[0].toNumber(), userBId);
+      assert(await instance.followingMapping.call(userAId, userBId));
+  
+      // User can't double follow
+      let err;
+      try {
+        await instance._follow(userAId, userBId);
+      } catch (e) {
+        err = e;
+      }
+      assert(err);
+    })
 
-    await instance._unFollow(userAId, userBId);
-    userB = (await instance.users.call(userBId));
-    numFollowers = userB[1].toNumber();
-    assert(numFollowers === 0, 'incorrect number of followers');
-    
-    await instance._follow(userAId, userBId);
+    it('unfollows user', async () => {
+      await instance._unFollow(userAId, userBId);
+      userB = (await instance.users.call(userBId));
+      numFollowers = userB[1].toNumber();
+      assert(numFollowers === 0, 'incorrect number of followers');
+    })
 
-    followingMappingKeys = await instance._getFollowingMappingKeys.call(userAId);
-    assert.equal(followingMappingKeys[0].toNumber(), userBId);
+    it('refollows user', async () => {
+      await instance._follow(userAId, userBId);
+  
+      followingMappingKeys = await instance._getFollowingMappingKeys.call(userAId);
+      assert.equal(followingMappingKeys[0].toNumber(), userBId);
+    })
+  })
+
+  describe('tweet tests', () => {
+    let events = [];
+    let tweets = [];
+    before(async () => {
+      let i = 0;
+      for(let tweetText of ['fake-tweet-1', 'fake-tweet-2']) {
+        const tx = await instance._createTweet(i, tweetText);
+        events.push(tx.logs[0].event);
+        const currTweet = (await instance.tweets.call(i));
+        tweets.push(currTweet);
+        i++;
+      }
+    })
+
+    it('creates tweets', async () => {
+      assert.strictEqual(tweets.length, 2);
+    })
+
+    it('emits new tweet events', () => {
+      assert.strictEqual(events.length, 2);
+      assert.strictEqual(events[0], 'NewTweet');
+    })
+
+    it('likes tweets', async () => {
+      let userBId = 1;
+      const tweetId = 0;
+      await instance._likeTweet(userBId, tweetId);
+      const tweet = (await instance.tweets.call(tweetId));
+      const numLikes = tweet[1].toNumber();
+      assert.strictEqual(numLikes, 1, 'incorrect number of likes');
+    })
   })
 })
