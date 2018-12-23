@@ -14,8 +14,8 @@ contract SolTweet {
     mapping (uint => address) userToOwner;
     mapping (uint => uint) tweetToUserId;
     mapping (uint => bool) userHasLikedTweet;
-    //maps follower => user they follow
-    mapping (uint => bool) hasFollowed;
+    mapping (uint => mapping (uint => bool)) public followingMapping;
+    mapping (uint => uint[]) public followingMappingKeys;
 
     struct User {
         string username;
@@ -29,7 +29,10 @@ contract SolTweet {
 
     User[] public users;
     Tweet[] public tweets;
-    string[] public usernames;
+
+    function _getFollowingMappingKeys(uint _userId) public view returns (uint[] memory) {
+        return followingMappingKeys[_userId];
+    }
 
     function _createUser(string memory _username) public returns (uint) {
         User memory newUser;
@@ -61,24 +64,29 @@ contract SolTweet {
         myTweet.likes = myTweet.likes.add(1);
     }
 
-    function _follow(uint _userId /*, uint _userIdToFollow */) public view {
+    function _follow(uint _userId, uint _userIdToFollow) public {
         require(userToOwner[_userId] == msg.sender, "unauthorized sender");
-        // bool userHasFollowed = userHasLikedTweet[uint(keccak256(abi.encodePacked(_userId, _userIdToFollow)))];
         //check that the users isn't already following
+        require(!followingMapping[_userId][_userIdToFollow], "user already following");
         // require(following[_userId] != _userIdToFollow, "sender is already following");
         
         //add the follower and increase follower count
         // following[_userId] = _userIdToFollow;
-        users[_userId].followerCount.add(1);
+        User storage userToFollow = users[_userIdToFollow];
+        userToFollow.followerCount = userToFollow.followerCount.add(1);
+        followingMapping[_userId][_userIdToFollow] = true;
+        followingMappingKeys[_userId].push(_userIdToFollow);
     }
 
-    function _unFollow(uint _userId/*, uint _userIdToUnFollow*/) public view {
+    function _unFollow(uint _userId, uint _userIdToUnFollow) public {
         require(userToOwner[_userId] == msg.sender, "unauthorized sender");
         //check that the users is already following
         // require(following[_userId] == _userIdToUnFollow, "sender is not following");
         
         //remove the follower and decrease follower count
         // delete following[_userId];
-        users[_userId].followerCount.sub(1);
+        User storage userToUnFollow = users[_userIdToUnFollow];
+        followingMapping[_userId][_userIdToUnFollow] = false;
+        userToUnFollow.followerCount = userToUnFollow.followerCount.sub(1);
     }
 }
