@@ -68,7 +68,6 @@ contract SolTweet {
         require(userToOwner[_userId] == msg.sender, "unauthorized sender");
         //check that the users isn't already following
         require(!followingMapping[_userId][_userIdToFollow], "user already following");
-        // require(following[_userId] != _userIdToFollow, "sender is already following");
         
         //add the follower and increase follower count
         // following[_userId] = _userIdToFollow;

@@ -74,9 +74,16 @@ describe('SolTweet', () => {
 
     let followingMappingKeys = await instance._getFollowingMappingKeys.call(userAId);
     assert.equal(followingMappingKeys[0].toNumber(), userBId);
+    assert(await instance.followingMapping.call(userAId, userBId));
 
     // User can't double follow
-    assert.rejects(async () => await instance._follow(userAId, userBId), 'double follow');
+    let err;
+    try {
+      await instance._follow(userAId, userBId);
+    } catch (e) {
+      err = e;
+    }
+    assert(err);
 
     await instance._unFollow(userAId, userBId);
     userB = (await instance.users.call(userBId));
