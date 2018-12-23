@@ -6,7 +6,7 @@ const Web3 = require('web3');
 
 const web3 = new Web3(ganache.provider());
 
-const json = require('./../build/contracts/SolTweet.json');
+// const json = require('./../build/contracts/SolTweet.json');
 
 const SolTweet = artifacts.require("SolTweet");
 

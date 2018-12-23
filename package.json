@@ -1,31 +1,6 @@
 {
-  "name": "soltweet",
-  "version": "1.0.0",
-  "description": "## About SolTweet is a Twitter clone written in [Solidity](https://solidity.readthedocs.io/en/v0.5.1/). Solidity is the language used to write Smart Contracts, or programmable transactions, on the Ethereum network.",
-  "main": "truffle-config.js",
-  "directories": {
-    "test": "test"
-  },
   "dependencies": {
-    "ganache-cli": "^6.2.3",
-    "mocha": "^5.2.0",
+    "ganache-cli": "^6.2.5",
     "web3": "^1.0.0-beta.37"
-  },
-  "devDependencies": {},
-  "scripts": {
-    "test-truffle": "truffle test",
-    "test-frontend": "cd soltweet-frontend; yarn test",
-    "start-frontend": "cd soltweet-frontend; yarn start",
-    "test": "yarn test-truffle; yarn test-frontend"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/insghost/soltweet.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/insghost/soltweet/issues"
-  },
-  "homepage": "https://github.com/insghost/soltweet#readme"
+  }
 }

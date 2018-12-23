@@ -1,6 +1,5 @@
-var SolTweet = artifacts.require("SolTweet");
+var SimpleStorage = artifacts.require("./SimpleStorage.sol");
 
 module.exports = function(deployer) {
-  // console.log(SolTweet);
-  deployer.deploy(SolTweet);
+  deployer.deploy(SimpleStorage);
 };
