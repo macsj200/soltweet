@@ -1,4 +1,4 @@
-import { css } from '@emotion/core'
+import { css, jsx } from '@emotion/core'
 import React, { SFC } from 'react'
 import {
   contentWidth,
@@ -7,7 +7,11 @@ import {
   mq
 } from '../css-variables'
 import styled from '@emotion/styled';
-
+import { Tweet as TweetType } from '../types/types'
+import { space2X, space1X, spaceHalfX } from '../css-variables';
+/** @jsx jsx */
+// WTF emotion?!
+jsx;
 // This component should be used to wrap our content.
 // It will keep the content margins consistent throughout the app.
 
@@ -32,7 +36,7 @@ const Container: SFC<IProps> = ({
 }) => {
   const Div = styled.div`
     display: block;
-    margin: 0 auto;
+    margin: ${space2X} auto;
     max-width: ${maxWidth};
     padding: ${vertical} ${horizontal};
     position: relative;

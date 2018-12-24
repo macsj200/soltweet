@@ -82,35 +82,52 @@ class App extends Component {
       );
       console.error(error);
     }
-  };
+  }
 
   fetchTweets = async () => {
     const { contract, accounts } = this.state
     const numberOfTweets = await contract.methods._getNumberOfTweets().call()
-    // const numberOfTweets = 0
     const tweets: any = []
     for(let i = 0; i < numberOfTweets; i++) {
-      const tweet = await contract.methods.tweets(i).call()
-      const { text, authorId, likes } = tweet
-      const author = await contract.methods.users(authorId).call()
-      const { username } = author
-      tweets.push({
-        author: username,
-        text,
-        likeCount: likes,
-        id: i
-      })
       // web3.eth.subscribe('LikeCountChange', i)
+
+      tweets.push(await this.fetchTweet(i))
     }
     this.setState({ tweets })
   }
+
   likeTweet = async (tweetId: string) => {
     const { contract, accounts } = this.state
     await contract.methods._likeTweet(this.state.userId, tweetId).send({ from: accounts[0] })
   }
+
+  fetchTweet = async (tweetId: number) => {
+    const { contract } = this.state;
+    // return await contract.methods.tweets(tweetId).call()
+    const tweet = await contract.methods.tweets(tweetId).call()
+    const { text, authorId, likes } = tweet
+    const author = await contract.methods.users(authorId).call()
+    const { username } = author
+    return {
+      author: username,
+      text,
+      likeCount: likes,
+      id: tweetId
+    }
+  }
+
   setup = async () => {
     const { accounts, contract } = this.state
     this.fetchTweets()
+    contract.events.NewTweet({
+      filter: {
+        userId: [0, 1, 2, 3],
+      },
+    }, async (err: Error, res?: any) => {
+      // console.log(err, res)
+      const { tweetId } = res.returnValues
+      this.setState({ tweets: [...this.state.tweets, await this.fetchTweet(tweetId)] })
+    })
     const userHasAccount = await contract.methods.ownerHasAccount(accounts[0]).call()
     const userId = await contract.methods.ownerToUser(accounts[0]).call()
     if (userHasAccount && userId) {
@@ -156,7 +173,6 @@ class App extends Component {
     //   tweets: [tweet, ...this.state.tweets]
     // })
     const res = await contract.methods._createTweet(userId, tweetText).send({ from: accounts[0] })
-    this.updateTweets()
     // const tweetRes = await contract.methods.tweets(0).call()
   }
 
@@ -213,6 +229,8 @@ class App extends Component {
             css={css`
               margin-top: ${space2X};
               margin-bottom: ${space1X};
+              display: flex;
+              flex-direction: column-reverse;
             `}
           >
             {this.state.tweets.map((tweet, idx) => <Tweet tweet={tweet} likeTweet={this.likeTweet} key={idx} />)}

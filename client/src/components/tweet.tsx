@@ -20,7 +20,8 @@ const Tweet: SFC<IProps> = ({
       css={css`
         border-top: solid 1px;
         border-bottom: solid 0px;
-        &:last-child {
+        /* Reversed column direction */
+        &:first-of-type {
           border-bottom: solid 1px;
         }
         padding: ${space1X} ${space2X};
