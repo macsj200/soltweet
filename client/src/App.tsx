@@ -91,15 +91,21 @@ class App extends Component {
     const tweets: any = []
     for(let i = 0; i < numberOfTweets; i++) {
       const tweet = await contract.methods.tweets(i).call()
-      const { text, authorId } = tweet
+      const { text, authorId, likes } = tweet
       const author = await contract.methods.users(authorId).call()
       const { username } = author
       tweets.push({
         author: username,
-        tweetText: text
+        text,
+        likeCount: likes,
+        id: authorId
       })
     }
     this.setState({ tweets })
+  }
+  likeTweet = async (tweetId: string) => {
+    const { contract, accounts } = this.state
+    await contract.methods._likeTweet(this.state.userId, tweetId).send({ from: accounts[0] })
   }
   setup = async () => {
     const { accounts, contract } = this.state
@@ -208,7 +214,7 @@ class App extends Component {
               margin-bottom: ${space1X};
             `}
           >
-            {this.state.tweets.map((tweet, idx) => <Tweet {...tweet} key={idx} />)}
+            {this.state.tweets.map((tweet, idx) => <Tweet tweet={tweet} likeTweet={this.likeTweet} key={idx} />)}
           </div>
           <button
             onClick={this.updateTweets}

@@ -6,13 +6,14 @@ import { space2X, space1X, spaceHalfX } from '../css-variables';
 // WTF emotion?!
 jsx;
 
-interface IProps extends TweetType {
+interface IProps {
+  likeTweet: Function,
+  tweet: TweetType
 }
 
-
 const Tweet: SFC<IProps> = ({
-  author,
-  tweetText
+  tweet,
+  likeTweet
 }) => {
   return (
     <div
@@ -35,8 +36,10 @@ const Tweet: SFC<IProps> = ({
         css={css`
           margin-bottom: ${spaceHalfX};
         `}
-      >{author}</h3>
-      <p>{tweetText}</p>
+      >{tweet.author}</h3>
+      <p>{tweet.text}</p>
+      <p>Like Count: {tweet.likeCount}</p>
+      <p onClick={() => likeTweet(tweet.id)}>Like</p>
     </div>
   )
 }

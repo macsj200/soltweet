@@ -2,5 +2,9 @@
   "dependencies": {
     "ganache-cli": "^6.2.5",
     "web3": "^1.0.0-beta.37"
+  },
+  "scripts": {
+    "clean": "rm -rf client/src/contracts && truffle compile && truffle migrate --reset",
+    "start": "cd client && yarn start"
   }
 }

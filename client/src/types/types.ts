@@ -1,4 +1,6 @@
 export interface Tweet {
   author: string
-  tweetText: string
+  text: string
+  id: string,
+  likeCount: number
 }
