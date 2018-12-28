@@ -10,6 +10,7 @@ contract SolTweet {
 
     event NewUser(uint userId);
     event NewTweet(uint tweetId, uint indexed userId);
+    event LikeCountChange(uint tweetId);
 
     mapping (uint => address) userToOwner;
     mapping (address => uint) public ownerToUser;
@@ -71,6 +72,7 @@ contract SolTweet {
         require(!userLikedTweet, "user already liked tweet");
         Tweet storage myTweet = tweets[_tweetId];
         myTweet.likes = myTweet.likes.add(1);
+        emit LikeCountChange(_tweetId);
     }
 
     function _follow(uint _userId, uint _userIdToFollow) public {
