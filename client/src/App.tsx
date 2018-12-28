@@ -98,8 +98,9 @@ class App extends Component {
         author: username,
         text,
         likeCount: likes,
-        id: authorId
+        id: i
       })
+      // web3.eth.subscribe('LikeCountChange', i)
     }
     this.setState({ tweets })
   }
