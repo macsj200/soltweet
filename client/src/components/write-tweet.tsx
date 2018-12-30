@@ -1,8 +1,8 @@
 import React, { SFC, ChangeEvent } from 'react'
 /** @jsx jsx */
-import { css, jsx } from "@emotion/core";
+import { css, jsx } from '@emotion/core'
 // WTF emotion?!
-jsx;
+jsx
 
 interface IProps {
   handleSubmitTweet: Function
@@ -15,9 +15,10 @@ class WriteTweet extends React.Component<IProps> {
     this.setState({ tweetText: event.target.value })
   }
 
-  submitTweet = () => this.props.handleSubmitTweet({
-    tweetText: this.state.tweetText
-  })
+  submitTweet = () =>
+    this.props.handleSubmitTweet({
+      tweetText: this.state.tweetText,
+    })
 
   render() {
     return (
@@ -55,11 +56,12 @@ class WriteTweet extends React.Component<IProps> {
             }
           `}
           onClick={this.submitTweet}
-        >Submit</button>
+        >
+          Submit
+        </button>
       </div>
     )
   }
 }
-
 
 export default WriteTweet

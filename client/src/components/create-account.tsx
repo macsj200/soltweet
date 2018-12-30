@@ -1,8 +1,8 @@
 import React, { SFC, ChangeEvent } from 'react'
 /** @jsx jsx */
-import { css, jsx } from "@emotion/core";
+import { css, jsx } from '@emotion/core'
 // WTF emotion?!
-jsx;
+jsx
 
 interface IProps {
   createAccount: Function
@@ -13,7 +13,7 @@ interface IState {
 }
 
 class CreateAccount extends React.Component<IProps> {
-  state : IState = { username: '' }
+  state: IState = { username: '' }
 
   setUsername = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     this.setState({ username: event.target.value })
@@ -29,20 +29,18 @@ class CreateAccount extends React.Component<IProps> {
           flex-direction: column;
         `}
       >
-        <textarea
-          onChange={this.setUsername}
-          value={this.state.username}
-        />
+        <textarea onChange={this.setUsername} value={this.state.username} />
         <button
           css={css`
             margin-top: 0.375rem;
           `}
           onClick={this.createAccount}
-        >Create Account</button>
+        >
+          Create Account
+        </button>
       </div>
     )
   }
 }
-
 
 export default CreateAccount

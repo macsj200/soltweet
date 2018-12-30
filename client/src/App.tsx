@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import './App.css';
+import React, { Component } from 'react'
+import './App.css'
 import Container from './components/container'
 import styled from '@emotion/styled'
 import { jsx, css } from '@emotion/core'
-import Tweet from './components/tweet';
-import WriteTweet from './components/write-tweet';
+import Tweet from './components/tweet'
+import WriteTweet from './components/write-tweet'
 import { Tweet as TweetType } from './types/types'
-import SolTweet from "./contracts/SolTweet.json";
-import getWeb3 from "./utils/getWeb3";
-import CreateAccount from './components/create-account';
-import { space2X, space1X } from './css-variables';
-jsx;
+import SolTweet from './contracts/SolTweet.json'
+import getWeb3 from './utils/getWeb3'
+import CreateAccount from './components/create-account'
+import { space2X, space1X } from './css-variables'
+jsx
 /** @jsx jsx */
 
 const H1 = styled.h1`
@@ -23,38 +23,38 @@ interface HandleSubmitTweetArgs {
 }
 
 interface IState {
-  tweets: TweetType[],
+  tweets: TweetType[]
   web3: any
   accounts: any
   contract: any
-  username?: string,
+  username?: string
   userId?: number
 }
 
 class App extends Component {
-  state : IState = {
+  state: IState = {
     tweets: [],
     web3: null,
     accounts: null,
-    contract: null
+    contract: null,
   }
 
   componentDidMount = async () => {
     try {
       // Get network provider and web3 instance.
-      const web3 = await getWeb3();
+      const web3 = await getWeb3()
 
       // Use web3 to get the user's accounts.
-      const accounts = await web3.eth.getAccounts();
+      const accounts = await web3.eth.getAccounts()
 
       // Get the contract instance.
-      const networkId = await web3.eth.net.getId();
-      const deployedNetwork = (SolTweet as any).networks[networkId];
+      const networkId = await web3.eth.net.getId()
+      const deployedNetwork = (SolTweet as any).networks[networkId]
       // console.log(SolTweet.networks)
       const instance = new web3.eth.Contract(
         SolTweet.abi,
-        deployedNetwork && deployedNetwork.address,
-      );
+        deployedNetwork && deployedNetwork.address
+      )
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
@@ -63,9 +63,9 @@ class App extends Component {
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
-        `Failed to load web3, accounts, or contract. Check console for details.`,
-      );
-      console.error(error);
+        `Failed to load web3, accounts, or contract. Check console for details.`
+      )
+      console.error(error)
     }
   }
 
@@ -73,7 +73,7 @@ class App extends Component {
     const { contract, accounts } = this.state
     const numberOfTweets = await contract.methods._getNumberOfTweets().call()
     const tweets: any = []
-    for(let i = 0; i < numberOfTweets; i++) {
+    for (let i = 0; i < numberOfTweets; i++) {
       // web3.eth.subscribe('LikeCountChange', i)
 
       tweets.push(await this.fetchTweet(i))
@@ -83,10 +83,12 @@ class App extends Component {
 
   likeTweet = async (tweetId: string) => {
     const { contract, accounts } = this.state
-    await contract.methods._likeTweet(this.state.userId, tweetId).send({ from: accounts[0] })
+    await contract.methods
+      ._likeTweet(this.state.userId, tweetId)
+      .send({ from: accounts[0] })
   }
 
-  fetchTweet = async (tweetId: number) : Promise<TweetType> => {
+  fetchTweet = async (tweetId: number): Promise<TweetType> => {
     const { contract } = this.state
     const tweet = await contract.methods.tweets(tweetId).call()
     const { text, authorId, likes } = tweet
@@ -96,30 +98,38 @@ class App extends Component {
       author: username,
       text,
       likeCount: likes,
-      id: tweetId.toString()
+      id: tweetId.toString(),
     }
   }
 
   setup = async () => {
     const { accounts, contract } = this.state
     this.fetchTweets()
-    contract.events.NewTweet({
-      filter: {
-        userId: [0, 1, 2, 3],
+    contract.events.NewTweet(
+      {
+        filter: {
+          userId: [0, 1, 2, 3],
+        },
       },
-    }, async (err: Error, res?: any) => {
-      // console.log(err, res)
-      const { tweetId } = res.returnValues
-      this.setState({ tweets: [...this.state.tweets, await this.fetchTweet(tweetId)] })
-    })
-    const userHasAccount = await contract.methods.ownerHasAccount(accounts[0]).call()
+      async (err: Error, res?: any) => {
+        // console.log(err, res)
+        const { tweetId } = res.returnValues
+        this.setState({
+          tweets: [...this.state.tweets, await this.fetchTweet(tweetId)],
+        })
+      }
+    )
+    const userHasAccount = await contract.methods
+      .ownerHasAccount(accounts[0])
+      .call()
     const userId = await contract.methods.ownerToUser(accounts[0]).call()
     if (userHasAccount && userId) {
       try {
         const user = await contract.methods.users(userId).call()
         const { username } = user
         this.setState({
-          userId, username
+          userId,
+          username,
         })
       } catch (err) {
         console.log('no user for address found')
@@ -127,22 +137,24 @@ class App extends Component {
     }
   }
 
-  handleSubmitTweet = async ({
-    tweetText
-  } : HandleSubmitTweetArgs) => {
+  handleSubmitTweet = async ({ tweetText }: HandleSubmitTweetArgs) => {
     const { accounts, contract, username, userId } = this.state
 
-    await contract.methods._createTweet(userId, tweetText).send({ from: accounts[0] })
+    await contract.methods
+      ._createTweet(userId, tweetText)
+      .send({ from: accounts[0] })
   }
 
   createAccount = async (username: string) => {
     const { accounts, contract } = this.state
 
-    const userId = await contract.methods._createUser(username).send({ from: accounts[0] })
+    const userId = await contract.methods
+      ._createUser(username)
+      .send({ from: accounts[0] })
 
     this.setState({
       username,
-      userId
+      userId,
     })
   }
 
@@ -160,7 +172,9 @@ class App extends Component {
             <span>Logged in as {username}</span>
           ) : (
             <>
-              <span>This wallet does not have a user account. Create one to tweet.</span>
+              <span>
+                This wallet does not have a user account. Create one to tweet.
+              </span>
               <CreateAccount createAccount={this.createAccount} />
             </>
           )}
@@ -180,7 +194,9 @@ class App extends Component {
               flex-direction: column-reverse;
             `}
           >
-            {this.state.tweets.map((tweet, idx) => <Tweet tweet={tweet} likeTweet={this.likeTweet} key={idx} />)}
+            {this.state.tweets.map((tweet, idx) => (
+              <Tweet tweet={tweet} likeTweet={this.likeTweet} key={idx} />
+            ))}
           </div>
           <button
             onClick={this.updateTweets}
@@ -204,11 +220,9 @@ class App extends Component {
             Refresh
           </button>
         </div>
-        {userId && <WriteTweet
-          handleSubmitTweet={this.handleSubmitTweet}
-        />}
+        {userId && <WriteTweet handleSubmitTweet={this.handleSubmitTweet} />}
       </Container>
-    );
+    )
   }
 }
 

@@ -10,21 +10,14 @@
   "ast": {
     "absolutePath": "/Users/wesleysmith/repos/soltweet/contracts/SafeMath.sol",
     "exportedSymbols": {
-      "SafeMath": [
-        189
-      ]
+      "SafeMath": [189]
     },
     "id": 190,
     "nodeType": "SourceUnit",
     "nodes": [
       {
         "id": 58,
-        "literals": [
-          "solidity",
-          "^",
-          "0.4",
-          ".24"
-        ],
+        "literals": ["solidity", "^", "0.4", ".24"],
         "nodeType": "PragmaDirective",
         "src": "0:24:1"
       },
@@ -35,9 +28,7 @@
         "documentation": "@title SafeMath\n@dev Math operations with safety checks that revert on error",
         "fullyImplemented": true,
         "id": 189,
-        "linearizedBaseContracts": [
-          189
-        ],
+        "linearizedBaseContracts": [189],
         "name": "SafeMath",
         "nodeType": "ContractDefinition",
         "nodes": [
@@ -135,9 +126,7 @@
                   }
                 },
                 {
-                  "assignments": [
-                    75
-                  ],
+                  "assignments": [75],
                   "declarations": [
                     {
                       "constant": false,
@@ -329,10 +318,7 @@
                       "id": 80,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        590,
-                        591
-                      ],
+                      "overloadedDeclarations": [590, 591],
                       "referencedDeclaration": 591,
                       "src": "587:7:1",
                       "typeDescriptions": {
@@ -579,10 +565,7 @@
                       "id": 101,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        590,
-                        591
-                      ],
+                      "overloadedDeclarations": [590, 591],
                       "referencedDeclaration": 591,
                       "src": "904:7:1",
                       "typeDescriptions": {
@@ -609,9 +592,7 @@
                   "src": "904:25:1"
                 },
                 {
-                  "assignments": [
-                    109
-                  ],
+                  "assignments": [109],
                   "declarations": [
                     {
                       "constant": false,
@@ -905,10 +886,7 @@
                       "id": 126,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        590,
-                        591
-                      ],
+                      "overloadedDeclarations": [590, 591],
                       "referencedDeclaration": 591,
                       "src": "1266:7:1",
                       "typeDescriptions": {
@@ -935,9 +913,7 @@
                   "src": "1266:26:1"
                 },
                 {
-                  "assignments": [
-                    134
-                  ],
+                  "assignments": [134],
                   "declarations": [
                     {
                       "constant": false,
@@ -1150,9 +1126,7 @@
               "src": "1483:89:1",
               "statements": [
                 {
-                  "assignments": [
-                    152
-                  ],
+                  "assignments": [152],
                   "declarations": [
                     {
                       "constant": false,
@@ -1312,10 +1286,7 @@
                       "id": 157,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        590,
-                        591
-                      ],
+                      "overloadedDeclarations": [590, 591],
                       "referencedDeclaration": 591,
                       "src": "1520:7:1",
                       "typeDescriptions": {
@@ -1562,10 +1533,7 @@
                       "id": 176,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        590,
-                        591
-                      ],
+                      "overloadedDeclarations": [590, 591],
                       "referencedDeclaration": 591,
                       "src": "1791:7:1",
                       "typeDescriptions": {
@@ -1761,21 +1729,14 @@
   "legacyAST": {
     "absolutePath": "/Users/wesleysmith/repos/soltweet/contracts/SafeMath.sol",
     "exportedSymbols": {
-      "SafeMath": [
-        189
-      ]
+      "SafeMath": [189]
     },
     "id": 190,
     "nodeType": "SourceUnit",
     "nodes": [
       {
         "id": 58,
-        "literals": [
-          "solidity",
-          "^",
-          "0.4",
-          ".24"
-        ],
+        "literals": ["solidity", "^", "0.4", ".24"],
         "nodeType": "PragmaDirective",
         "src": "0:24:1"
       },
@@ -1786,9 +1747,7 @@
         "documentation": "@title SafeMath\n@dev Math operations with safety checks that revert on error",
         "fullyImplemented": true,
         "id": 189,
-        "linearizedBaseContracts": [
-          189
-        ],
+        "linearizedBaseContracts": [189],
         "name": "SafeMath",
         "nodeType": "ContractDefinition",
         "nodes": [
@@ -1886,9 +1845,7 @@
                   }
                 },
                 {
-                  "assignments": [
-                    75
-                  ],
+                  "assignments": [75],
                   "declarations": [
                     {
                       "constant": false,
@@ -2080,10 +2037,7 @@
                       "id": 80,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        590,
-                        591
-                      ],
+                      "overloadedDeclarations": [590, 591],
                       "referencedDeclaration": 591,
                       "src": "587:7:1",
                       "typeDescriptions": {
@@ -2330,10 +2284,7 @@
                       "id": 101,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        590,
-                        591
-                      ],
+                      "overloadedDeclarations": [590, 591],
                       "referencedDeclaration": 591,
                       "src": "904:7:1",
                       "typeDescriptions": {
@@ -2360,9 +2311,7 @@
                   "src": "904:25:1"
                 },
                 {
-                  "assignments": [
-                    109
-                  ],
+                  "assignments": [109],
                   "declarations": [
                     {
                       "constant": false,
@@ -2656,10 +2605,7 @@
                       "id": 126,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        590,
-                        591
-                      ],
+                      "overloadedDeclarations": [590, 591],
                       "referencedDeclaration": 591,
                       "src": "1266:7:1",
                       "typeDescriptions": {
@@ -2686,9 +2632,7 @@
                   "src": "1266:26:1"
                 },
                 {
-                  "assignments": [
-                    134
-                  ],
+                  "assignments": [134],
                   "declarations": [
                     {
                       "constant": false,
@@ -2901,9 +2845,7 @@
               "src": "1483:89:1",
               "statements": [
                 {
-                  "assignments": [
-                    152
-                  ],
+                  "assignments": [152],
                   "declarations": [
                     {
                       "constant": false,
@@ -3063,10 +3005,7 @@
                       "id": 157,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        590,
-                        591
-                      ],
+                      "overloadedDeclarations": [590, 591],
                       "referencedDeclaration": 591,
                       "src": "1520:7:1",
                       "typeDescriptions": {
@@ -3313,10 +3252,7 @@
                       "id": 176,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        590,
-                        591
-                      ],
+                      "overloadedDeclarations": [590, 591],
                       "referencedDeclaration": 591,
                       "src": "1791:7:1",
                       "typeDescriptions": {

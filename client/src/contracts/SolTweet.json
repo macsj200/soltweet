@@ -315,21 +315,14 @@
   "ast": {
     "absolutePath": "/Users/wesleysmith/repos/soltweet/contracts/SolTweet.sol",
     "exportedSymbols": {
-      "SolTweet": [
-        572
-      ]
+      "SolTweet": [572]
     },
     "id": 573,
     "nodeType": "SourceUnit",
     "nodes": [
       {
         "id": 214,
-        "literals": [
-          "solidity",
-          "^",
-          "0.4",
-          ".24"
-        ],
+        "literals": ["solidity", "^", "0.4", ".24"],
         "nodeType": "PragmaDirective",
         "src": "0:24:3"
       },
@@ -351,9 +344,7 @@
         "documentation": null,
         "fullyImplemented": true,
         "id": 572,
-        "linearizedBaseContracts": [
-          572
-        ],
+        "linearizedBaseContracts": [572],
         "name": "SolTweet",
         "nodeType": "ContractDefinition",
         "nodes": [
@@ -1524,9 +1515,7 @@
                   "src": "1326:25:3"
                 },
                 {
-                  "assignments": [
-                    326
-                  ],
+                  "assignments": [326],
                   "declarations": [
                     {
                       "constant": false,
@@ -2257,10 +2246,7 @@
                       "id": 373,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        590,
-                        591
-                      ],
+                      "overloadedDeclarations": [590, 591],
                       "referencedDeclaration": 591,
                       "src": "1671:7:3",
                       "typeDescriptions": {
@@ -2287,9 +2273,7 @@
                   "src": "1671:66:3"
                 },
                 {
-                  "assignments": [
-                    384
-                  ],
+                  "assignments": [384],
                   "declarations": [
                     {
                       "constant": false,
@@ -2939,10 +2923,7 @@
                       "id": 419,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        590,
-                        591
-                      ],
+                      "overloadedDeclarations": [590, 591],
                       "referencedDeclaration": 591,
                       "src": "2111:7:3",
                       "typeDescriptions": {
@@ -2969,9 +2950,7 @@
                   "src": "2111:66:3"
                 },
                 {
-                  "assignments": [
-                    430
-                  ],
+                  "assignments": [430],
                   "declarations": [
                     {
                       "constant": false,
@@ -3253,10 +3232,7 @@
                       "id": 443,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        590,
-                        591
-                      ],
+                      "overloadedDeclarations": [590, 591],
                       "referencedDeclaration": 591,
                       "src": "2290:7:3",
                       "typeDescriptions": {
@@ -3283,9 +3259,7 @@
                   "src": "2290:52:3"
                 },
                 {
-                  "assignments": [
-                    450
-                  ],
+                  "assignments": [450],
                   "declarations": [
                     {
                       "constant": false,
@@ -3762,10 +3736,7 @@
                       "id": 477,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        590,
-                        591
-                      ],
+                      "overloadedDeclarations": [590, 591],
                       "referencedDeclaration": 591,
                       "src": "2561:7:3",
                       "typeDescriptions": {
@@ -3911,10 +3882,7 @@
                       "id": 487,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        590,
-                        591
-                      ],
+                      "overloadedDeclarations": [590, 591],
                       "referencedDeclaration": 591,
                       "src": "2692:7:3",
                       "typeDescriptions": {
@@ -3941,9 +3909,7 @@
                   "src": "2692:78:3"
                 },
                 {
-                  "assignments": [
-                    498
-                  ],
+                  "assignments": [498],
                   "declarations": [
                     {
                       "constant": false,
@@ -4568,10 +4534,7 @@
                       "id": 536,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        590,
-                        591
-                      ],
+                      "overloadedDeclarations": [590, 591],
                       "referencedDeclaration": 591,
                       "src": "3222:7:3",
                       "typeDescriptions": {
@@ -4598,9 +4561,7 @@
                   "src": "3222:66:3"
                 },
                 {
-                  "assignments": [
-                    547
-                  ],
+                  "assignments": [547],
                   "declarations": [
                     {
                       "constant": false,
@@ -5007,21 +4968,14 @@
   "legacyAST": {
     "absolutePath": "/Users/wesleysmith/repos/soltweet/contracts/SolTweet.sol",
     "exportedSymbols": {
-      "SolTweet": [
-        572
-      ]
+      "SolTweet": [572]
     },
     "id": 573,
     "nodeType": "SourceUnit",
     "nodes": [
       {
         "id": 214,
-        "literals": [
-          "solidity",
-          "^",
-          "0.4",
-          ".24"
-        ],
+        "literals": ["solidity", "^", "0.4", ".24"],
         "nodeType": "PragmaDirective",
         "src": "0:24:3"
       },
@@ -5043,9 +4997,7 @@
         "documentation": null,
         "fullyImplemented": true,
         "id": 572,
-        "linearizedBaseContracts": [
-          572
-        ],
+        "linearizedBaseContracts": [572],
         "name": "SolTweet",
         "nodeType": "ContractDefinition",
         "nodes": [
@@ -6216,9 +6168,7 @@
                   "src": "1326:25:3"
                 },
                 {
-                  "assignments": [
-                    326
-                  ],
+                  "assignments": [326],
                   "declarations": [
                     {
                       "constant": false,
@@ -6949,10 +6899,7 @@
                       "id": 373,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        590,
-                        591
-                      ],
+                      "overloadedDeclarations": [590, 591],
                       "referencedDeclaration": 591,
                       "src": "1671:7:3",
                       "typeDescriptions": {
@@ -6979,9 +6926,7 @@
                   "src": "1671:66:3"
                 },
                 {
-                  "assignments": [
-                    384
-                  ],
+                  "assignments": [384],
                   "declarations": [
                     {
                       "constant": false,
@@ -7631,10 +7576,7 @@
                       "id": 419,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        590,
-                        591
-                      ],
+                      "overloadedDeclarations": [590, 591],
                       "referencedDeclaration": 591,
                       "src": "2111:7:3",
                       "typeDescriptions": {
@@ -7661,9 +7603,7 @@
                   "src": "2111:66:3"
                 },
                 {
-                  "assignments": [
-                    430
-                  ],
+                  "assignments": [430],
                   "declarations": [
                     {
                       "constant": false,
@@ -7945,10 +7885,7 @@
                       "id": 443,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        590,
-                        591
-                      ],
+                      "overloadedDeclarations": [590, 591],
                       "referencedDeclaration": 591,
                       "src": "2290:7:3",
                       "typeDescriptions": {
@@ -7975,9 +7912,7 @@
                   "src": "2290:52:3"
                 },
                 {
-                  "assignments": [
-                    450
-                  ],
+                  "assignments": [450],
                   "declarations": [
                     {
                       "constant": false,
@@ -8454,10 +8389,7 @@
                       "id": 477,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        590,
-                        591
-                      ],
+                      "overloadedDeclarations": [590, 591],
                       "referencedDeclaration": 591,
                       "src": "2561:7:3",
                       "typeDescriptions": {
@@ -8603,10 +8535,7 @@
                       "id": 487,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        590,
-                        591
-                      ],
+                      "overloadedDeclarations": [590, 591],
                       "referencedDeclaration": 591,
                       "src": "2692:7:3",
                       "typeDescriptions": {
@@ -8633,9 +8562,7 @@
                   "src": "2692:78:3"
                 },
                 {
-                  "assignments": [
-                    498
-                  ],
+                  "assignments": [498],
                   "declarations": [
                     {
                       "constant": false,
@@ -9260,10 +9187,7 @@
                       "id": 536,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        590,
-                        591
-                      ],
+                      "overloadedDeclarations": [590, 591],
                       "referencedDeclaration": 591,
                       "src": "3222:7:3",
                       "typeDescriptions": {
@@ -9290,9 +9214,7 @@
                   "src": "3222:66:3"
                 },
                 {
-                  "assignments": [
-                    547
-                  ],
+                  "assignments": [547],
                   "declarations": [
                     {
                       "constant": false,

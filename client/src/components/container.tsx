@@ -4,14 +4,14 @@ import {
   contentWidth,
   horizontalPageMargin,
   horizontalPageMarginSmall,
-  mq
+  mq,
 } from '../css-variables'
-import styled from '@emotion/styled';
+import styled from '@emotion/styled'
 import { Tweet as TweetType } from '../types/types'
-import { space2X, space1X, spaceHalfX } from '../css-variables';
+import { space2X, space1X, spaceHalfX } from '../css-variables'
 /** @jsx jsx */
 // WTF emotion?!
-jsx;
+jsx
 // This component should be used to wrap our content.
 // It will keep the content margins consistent throughout the app.
 
@@ -24,7 +24,6 @@ interface IProps {
   vertical?: string
 }
 
-
 const Container: SFC<IProps> = ({
   children,
   containerStyles,
@@ -32,7 +31,7 @@ const Container: SFC<IProps> = ({
   maxWidth = contentWidth,
   mobileHorizontal = horizontalPageMarginSmall,
   mobileVertical = '0',
-  vertical = '0'
+  vertical = '0',
 }) => {
   const Div = styled.div`
     display: block;
@@ -51,11 +50,7 @@ const Container: SFC<IProps> = ({
 
     ${containerStyles};
   `
-  return (
-    <Div>
-      {children}
-    </Div>
-  )
+  return <Div>{children}</Div>
 }
 
 export default Container

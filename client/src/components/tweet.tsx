@@ -1,20 +1,17 @@
 import { css, jsx } from '@emotion/core'
 import React, { SFC } from 'react'
 import { Tweet as TweetType } from '../types/types'
-import { space2X, space1X, spaceHalfX } from '../css-variables';
+import { space2X, space1X, spaceHalfX } from '../css-variables'
 /** @jsx jsx */
 // WTF emotion?!
-jsx;
+jsx
 
 interface IProps {
-  likeTweet: Function,
+  likeTweet: Function
   tweet: TweetType
 }
 
-const Tweet: SFC<IProps> = ({
-  tweet,
-  likeTweet
-}) => {
+const Tweet: SFC<IProps> = ({ tweet, likeTweet }) => {
   return (
     <div
       css={css`
@@ -37,7 +34,9 @@ const Tweet: SFC<IProps> = ({
         css={css`
           margin-bottom: ${spaceHalfX};
         `}
-      >{tweet.author}</h3>
+      >
+        {tweet.author}
+      </h3>
       <p>{tweet.text}</p>
       <p>Like Count: {tweet.likeCount}</p>
       <p onClick={() => likeTweet(tweet.id)}>Like</p>

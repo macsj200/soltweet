@@ -1,6 +1,6 @@
 export interface Tweet {
   author: string
   text: string
-  id: string,
+  id: string
   likeCount: number
 }

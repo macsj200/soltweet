@@ -39,21 +39,14 @@
   "ast": {
     "absolutePath": "/Users/wesleysmith/repos/soltweet/contracts/SimpleStorage.sol",
     "exportedSymbols": {
-      "SimpleStorage": [
-        212
-      ]
+      "SimpleStorage": [212]
     },
     "id": 213,
     "nodeType": "SourceUnit",
     "nodes": [
       {
         "id": 191,
-        "literals": [
-          "solidity",
-          "^",
-          "0.4",
-          ".24"
-        ],
+        "literals": ["solidity", "^", "0.4", ".24"],
         "nodeType": "PragmaDirective",
         "src": "0:24:2"
       },
@@ -64,9 +57,7 @@
         "documentation": null,
         "fullyImplemented": true,
         "id": 212,
-        "linearizedBaseContracts": [
-          212
-        ],
+        "linearizedBaseContracts": [212],
         "name": "SimpleStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
@@ -295,21 +286,14 @@
   "legacyAST": {
     "absolutePath": "/Users/wesleysmith/repos/soltweet/contracts/SimpleStorage.sol",
     "exportedSymbols": {
-      "SimpleStorage": [
-        212
-      ]
+      "SimpleStorage": [212]
     },
     "id": 213,
     "nodeType": "SourceUnit",
     "nodes": [
       {
         "id": 191,
-        "literals": [
-          "solidity",
-          "^",
-          "0.4",
-          ".24"
-        ],
+        "literals": ["solidity", "^", "0.4", ".24"],
         "nodeType": "PragmaDirective",
         "src": "0:24:2"
       },
@@ -320,9 +304,7 @@
         "documentation": null,
         "fullyImplemented": true,
         "id": 212,
-        "linearizedBaseContracts": [
-          212
-        ],
+        "linearizedBaseContracts": [212],
         "name": "SimpleStorage",
         "nodeType": "ContractDefinition",
         "nodes": [

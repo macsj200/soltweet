@@ -1,8 +1,8 @@
 import React, { SFC, ChangeEvent } from 'react'
 /** @jsx jsx */
-import { css, jsx } from "@emotion/core";
+import { css, jsx } from '@emotion/core'
 // WTF emotion?!
-jsx;
+jsx
 
 interface IProps {
   loginAs: Function
@@ -25,26 +25,26 @@ class LoginAs extends React.Component<IProps> {
           flex-direction: column;
         `}
       >
-        <textarea
-          onChange={this.setUserId}
-          value={this.state.userId}
-        />
+        <textarea onChange={this.setUserId} value={this.state.userId} />
         <button
           css={css`
             margin-top: 0.375rem;
           `}
           onClick={this.loginAs}
-        >Login</button>
+        >
+          Login
+        </button>
         <button
           css={css`
             margin-top: 0.375rem;
           `}
           onClick={this.loginAs}
-        >Create Account</button>
+        >
+          Create Account
+        </button>
       </div>
     )
   }
 }
-
 
 export default LoginAs

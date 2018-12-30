@@ -25,5 +25,5 @@ export const mq = {
   aboveMobile: '481px',
   desktop: '1024px',
   tablet: '768px',
-  mobile: '480px'
+  mobile: '480px',
 }
