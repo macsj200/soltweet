@@ -8,7 +8,6 @@ import WriteTweet from './components/write-tweet';
 import { Tweet as TweetType } from './types/types'
 import SolTweet from "./contracts/SolTweet.json";
 import getWeb3 from "./utils/getWeb3";
-import LoginAs from './components/login-as';
 import CreateAccount from './components/create-account';
 import { space2X, space1X } from './css-variables';
 jsx;
@@ -34,16 +33,7 @@ interface IState {
 
 class App extends Component {
   state : IState = {
-    tweets: [
-      // {
-      //   author: 'fake-author-1',
-      //   tweetText: 'fake-text-1'
-      // },
-      // {
-      //   author: 'fake-author-2',
-      //   tweetText: 'fake-text-2'
-      // }
-    ],
+    tweets: [],
     web3: null,
     accounts: null,
     contract: null
@@ -70,11 +60,6 @@ class App extends Component {
       // example of interacting with the contract's methods.
       this.setState({ web3, accounts, contract: instance })
       this.setup()
-      // this.getTweets()
-      // const res = await instance.methods._createUser('GhostRider').call();
-      // const user = await instance.methods.users(0).call();
-      // console.log(user);
-      // console.log(res);
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -101,9 +86,8 @@ class App extends Component {
     await contract.methods._likeTweet(this.state.userId, tweetId).send({ from: accounts[0] })
   }
 
-  fetchTweet = async (tweetId: number) => {
-    const { contract } = this.state;
-    // return await contract.methods.tweets(tweetId).call()
+  fetchTweet = async (tweetId: number) : Promise<TweetType> => {
+    const { contract } = this.state
     const tweet = await contract.methods.tweets(tweetId).call()
     const { text, authorId, likes } = tweet
     const author = await contract.methods.users(authorId).call()
@@ -112,7 +96,7 @@ class App extends Component {
       author: username,
       text,
       likeCount: likes,
-      id: tweetId
+      id: tweetId.toString()
     }
   }
 
@@ -141,58 +125,21 @@ class App extends Component {
         console.log('no user for address found')
       }
     }
-    // console.log(res)
-    // const user = await contract.methods.users(1).call()
-    // console.log(user)
   }
-
-  // getTweets = async () => {
-  //   const { accounts, contract } = this.state;
-
-  //   // Stores a given value, 5 by default.
-  //   // await contract.methods.set(5).send({ from: accounts[0] });
-
-  //   // Get the value from the contract to prove it worked.
-  //   // const response = await contract.methods.users(0).call();
-  //   // console.log(response);
-
-  //   // Update state with the result.
-  //   // this.setState({ tweets: response });
-  // };
 
   handleSubmitTweet = async ({
     tweetText
   } : HandleSubmitTweetArgs) => {
     const { accounts, contract, username, userId } = this.state
 
-    // const tweet = {
-    //   author: username,
-    //   tweetText
-    // }
-    // this.setState({
-    //   tweets: [tweet, ...this.state.tweets]
-    // })
-    const res = await contract.methods._createTweet(userId, tweetText).send({ from: accounts[0] })
-    // const tweetRes = await contract.methods.tweets(0).call()
+    await contract.methods._createTweet(userId, tweetText).send({ from: accounts[0] })
   }
-
-  // loginAs = async (userId: string) => {
-  //   const { accounts, contract } = this.state
-
-  //   const user = await contract.methods.users(userId).call()
-  //   const { username } = user
-  //   this.setState({
-  //     username,
-  //     userId
-  //   })
-  // }
 
   createAccount = async (username: string) => {
     const { accounts, contract } = this.state
 
     const userId = await contract.methods._createUser(username).send({ from: accounts[0] })
-    // const user = await contract.methods.users(userId).call()
-    // const { username } = user
+
     this.setState({
       username,
       userId
