@@ -2,7 +2,7 @@ import { css, jsx } from '@emotion/core'
 import React, { SFC } from 'react'
 import { Tweet as TweetType } from '../types/types'
 import { space2X, space1X, spaceHalfX } from '../css-variables'
-import { colors } from '..';
+import { colors } from '..'
 /** @jsx jsx */
 // WTF emotion?!
 jsx
@@ -24,7 +24,7 @@ const Tweet: SFC<IProps> = ({ tweet, likeTweet }) => {
         &:first-of-type {
           border-bottom: solid 1px;
         }
-        
+
         padding: ${space1X} ${space2X};
         display: flex;
         flex-direction: column;

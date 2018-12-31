@@ -9,9 +9,9 @@ import { Tweet as TweetType } from './types/types'
 import SolTweet from './contracts/SolTweet.json'
 import getWeb3 from './utils/getWeb3'
 import CreateAccount from './components/create-account'
-import { space2X, space1X } from './css-variables'
-import { colors } from '.';
-import Button from './components/button';
+import { space2X, space1X, space4X, mq } from './css-variables'
+import { colors } from '.'
+import Button from './components/button'
 jsx
 /** @jsx jsx */
 interface HandleSubmitTweetArgs {
@@ -163,31 +163,70 @@ class App extends Component {
     const { userId, username } = this.state
     return (
       <Container>
-        <Global styles={css`
-          body {
-            background-color: ${colors.darkestGrey};
-            color: ${colors.white};
-          }
-        `} />
+        <Global
+          styles={css`
+            body {
+              background-color: ${colors.darkestGrey};
+              color: ${colors.white};
+            }
+          `}
+        />
         <div>
           <h1
             css={css`
               text-align: center;
               color: ${colors.white};
+              font-weight: 900;
             `}
-          >SolTweet</h1>
+          >
+            SolTweet
+          </h1>
           {userId ? (
-            <span
+            <div
               css={css`
-                color: ${colors.lightGrey};
+                display: flex;
+                flex-direction: row;
+
+                @media (max-width: ${mq.aboveTablet}) {
+                  flex-direction: column;
+                }
               `}
-            >Logged in as
+            >
               <span
                 css={css`
-                  color: ${colors.white};
+                  color: ${colors.lightGrey};
+                  flex-grow: 1;
+                  font-size: 1.25rem;
+                  font-weight: 700;
+
+                  @media (max-width: ${mq.aboveTablet}) {
+                    font-size: 1rem;
+                  }
                 `}
-              > {username}</span>
-            </span>
+              >
+                Logged in as
+                <span
+                  css={css`
+                    color: ${colors.white};
+                  `}
+                >
+                  {' '}
+                  {username}
+                </span>
+              </span>
+              <div
+                css={css`
+                  margin-top: 0;
+                  flex-grow: 1;
+
+                  @media (max-width: ${mq.aboveTablet}) {
+                    margin-top: ${space2X};
+                  }
+                `}
+              >
+                <WriteTweet handleSubmitTweet={this.handleSubmitTweet} />
+              </div>
+            </div>
           ) : (
             <>
               <span>
@@ -201,14 +240,14 @@ class App extends Component {
           css={css`
             display: flex;
             flex-direction: column;
-            margin-bottom: ${space2X};
+            margin: 0 auto;
+            margin-top: ${space2X};
           `}
         >
           <div
             css={css`
-              margin-top: ${space2X};
-              margin-bottom: ${space1X};
               display: flex;
+              margin-bottom: ${space1X};
               flex-direction: column-reverse;
             `}
           >
@@ -216,11 +255,8 @@ class App extends Component {
               <Tweet tweet={tweet} likeTweet={this.likeTweet} key={idx} />
             ))}
           </div>
-          <Button onClick={this.updateTweets}>
-            Refresh
-          </Button>
+          <Button onClick={this.updateTweets}>Refresh</Button>
         </div>
-        {userId && <WriteTweet handleSubmitTweet={this.handleSubmitTweet} />}
       </Container>
     )
   }

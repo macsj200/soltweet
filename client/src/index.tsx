@@ -10,7 +10,7 @@ export const colors = {
   lightGrey: '#9baec8',
   white: '#d9e1e8',
   blue: '#2b90d9',
-  lightBlue: '#419bdd'
+  lightBlue: '#419bdd',
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))

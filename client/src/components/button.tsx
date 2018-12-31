@@ -8,7 +8,7 @@ import {
 } from '../css-variables'
 import styled from '@emotion/styled'
 import { space2X, space1X, spaceHalfX } from '../css-variables'
-import { colors } from '..';
+import { colors } from '..'
 /** @jsx jsx */
 // WTF emotion?!
 jsx
@@ -19,10 +19,7 @@ interface IProps {
   onClick?: (event: any) => void
 }
 
-const Button: SFC<IProps> = ({
-  children,
-  onClick,
-}) => {
+const Button: SFC<IProps> = ({ children, onClick }) => {
   return (
     <button
       onClick={onClick}
