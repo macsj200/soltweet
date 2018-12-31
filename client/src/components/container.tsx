@@ -1,4 +1,4 @@
-import { css, jsx } from '@emotion/core'
+import { css, jsx, SerializedStyles } from '@emotion/core'
 import React, { SFC } from 'react'
 import {
   contentWidth,
@@ -16,7 +16,7 @@ jsx
 // It will keep the content margins consistent throughout the app.
 
 interface IProps {
-  containerStyles?: string
+  containerStyles?: SerializedStyles
   horizontal?: string
   maxWidth?: string
   mobileHorizontal?: string

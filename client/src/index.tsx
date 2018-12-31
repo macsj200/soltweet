@@ -4,6 +4,15 @@ import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 
+export const colors = {
+  darkestGrey: '#16191f',
+  darkGrey: '#282c37',
+  lightGrey: '#9baec8',
+  white: '#d9e1e8',
+  blue: '#2b90d9',
+  lightBlue: '#419bdd'
+}
+
 ReactDOM.render(<App />, document.getElementById('root'))
 
 // If you want your app to work offline and load faster, you can change

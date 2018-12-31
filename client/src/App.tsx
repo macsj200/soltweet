@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import './App.css'
 import Container from './components/container'
 import styled from '@emotion/styled'
-import { jsx, css } from '@emotion/core'
+import { jsx, css, Global } from '@emotion/core'
 import Tweet from './components/tweet'
 import WriteTweet from './components/write-tweet'
 import { Tweet as TweetType } from './types/types'
@@ -10,13 +10,10 @@ import SolTweet from './contracts/SolTweet.json'
 import getWeb3 from './utils/getWeb3'
 import CreateAccount from './components/create-account'
 import { space2X, space1X } from './css-variables'
+import { colors } from '.';
+import Button from './components/button';
 jsx
 /** @jsx jsx */
-
-const H1 = styled.h1`
-  text-align: center;
-`
-
 interface HandleSubmitTweetArgs {
   author: string
   tweetText: string
@@ -166,10 +163,31 @@ class App extends Component {
     const { userId, username } = this.state
     return (
       <Container>
+        <Global styles={css`
+          body {
+            background-color: ${colors.darkestGrey};
+            color: ${colors.white};
+          }
+        `} />
         <div>
-          <H1>SolTweet</H1>
+          <h1
+            css={css`
+              text-align: center;
+              color: ${colors.white};
+            `}
+          >SolTweet</h1>
           {userId ? (
-            <span>Logged in as {username}</span>
+            <span
+              css={css`
+                color: ${colors.lightGrey};
+              `}
+            >Logged in as
+              <span
+                css={css`
+                  color: ${colors.white};
+                `}
+              > {username}</span>
+            </span>
           ) : (
             <>
               <span>
@@ -198,27 +216,9 @@ class App extends Component {
               <Tweet tweet={tweet} likeTweet={this.likeTweet} key={idx} />
             ))}
           </div>
-          <button
-            onClick={this.updateTweets}
-            css={css`
-              margin-top: 0.75rem;
-              background: #6baaf0;
-              border: none;
-              border-radius: 100px;
-              font-size: 1.5rem;
-              color: white;
-              padding: 0.75rem 0;
-              min-width: 120px;
-              margin-left: auto;
-              margin-right: auto;
-
-              &:hover {
-                background: #3771b3;
-              }
-            `}
-          >
+          <Button onClick={this.updateTweets}>
             Refresh
-          </button>
+          </Button>
         </div>
         {userId && <WriteTweet handleSubmitTweet={this.handleSubmitTweet} />}
       </Container>
