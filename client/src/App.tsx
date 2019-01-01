@@ -67,13 +67,31 @@ class App extends Component {
   }
 
   fetchTweets = async () => {
-    const { contract, accounts } = this.state
+    const { contract, accounts, web3 } = this.state
     const numberOfTweets = await contract.methods._getNumberOfTweets().call()
     const tweets: any = []
+<<<<<<< HEAD
     for (let i = 0; i < numberOfTweets; i++) {
       // web3.eth.subscribe('LikeCountChange', i)
 
       tweets.push(await this.fetchTweet(i))
+=======
+    for(let i = 0; i < numberOfTweets; i++) {
+      const tweet = await contract.methods.tweets(i).call()
+      const { text, authorId, likes } = tweet
+      const author = await contract.methods.users(authorId).call()
+      const { username } = author
+      tweets.push({
+        author: username,
+        text,
+        likeCount: likes,
+        id: i
+      });
+      debugger;
+      web3.eth.subscribe('LikeCountChange', i, (res: any) => {
+        console.log(res);
+      });
+>>>>>>> working on like events
     }
     this.setState({ tweets })
   }
