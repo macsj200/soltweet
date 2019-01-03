@@ -70,30 +70,38 @@ class App extends Component {
     const { contract, accounts, web3 } = this.state
     const numberOfTweets = await contract.methods._getNumberOfTweets().call()
     const tweets: any = []
-<<<<<<< HEAD
     for (let i = 0; i < numberOfTweets; i++) {
-      // web3.eth.subscribe('LikeCountChange', i)
-
       tweets.push(await this.fetchTweet(i))
-=======
-    for(let i = 0; i < numberOfTweets; i++) {
-      const tweet = await contract.methods.tweets(i).call()
-      const { text, authorId, likes } = tweet
-      const author = await contract.methods.users(authorId).call()
-      const { username } = author
-      tweets.push({
-        author: username,
-        text,
-        likeCount: likes,
-        id: i
-      });
-      debugger;
-      web3.eth.subscribe('LikeCountChange', i, (res: any) => {
-        console.log(res);
-      });
->>>>>>> working on like events
     }
+
     this.setState({ tweets })
+
+    // a list for saving subscribed event instances
+  const subscribedEvents = {}
+  // Subscriber method
+  const subscribeLogEvent = (contract: any, eventName: string) => {
+    const eventJsonInterface = web3.utils._.find(
+      contract._jsonInterface,
+      (o: any) => o.name === eventName && o.type === 'event',
+    )
+    const subscription = web3.eth.subscribe('logs', {
+      address: contract.options.address,
+      topics: [eventJsonInterface.signature]
+    }, (error: any, result: any) => {
+      if (!error) {
+        const eventObj = web3.eth.abi.decodeLog(
+          eventJsonInterface.inputs,
+          result.data,
+          result.topics.slice(1)
+        )
+        console.log(`New ${eventName}!`, eventObj)
+      }
+    })
+    subscribedEvents[eventName] = subscription
+  }
+
+  subscribeLogEvent(contract, 'Transfer')
+
   }
 
   likeTweet = async (tweetId: string) => {
@@ -164,7 +172,7 @@ class App extends Component {
         },
       },
       async (err: Error, res?: any) => {
-        // console.log(err, res)
+        console.log(err, res)
         const { tweetId } = res.returnValues
         this.setState({
           tweets: [...this.state.tweets, await this.fetchTweet(tweetId)],
