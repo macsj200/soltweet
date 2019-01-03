@@ -99,23 +99,22 @@ class App extends Component {
     }
   }
 
+  computeFollowing = async (userId: string): Promise<string[]> => {
+    const { accounts, contract } = this.state
+    const keys = await contract.methods._getFollowingMappingKeys(userId).call()
+    let result: string[] = []
+    for(let followingUserId of keys) {
+      const isFollowing = await contract.methods.followingMapping(userId, followingUserId).call()
+      if (isFollowing) {
+        result = [...result, followingUserId]
+      }
+    }
+    return result
+  }
+
   setup = async () => {
     const { accounts, contract } = this.state
     this.fetchTweets()
-    contract.events.NewTweet(
-      {
-        filter: {
-          userId: [0, 1, 2, 3],
-        },
-      },
-      async (err: Error, res?: any) => {
-        // console.log(err, res)
-        const { tweetId } = res.returnValues
-        this.setState({
-          tweets: [...this.state.tweets, await this.fetchTweet(tweetId)],
-        })
-      }
-    )
     const userHasAccount = await contract.methods
       .ownerHasAccount(accounts[0])
       .call()
@@ -132,6 +131,28 @@ class App extends Component {
         console.log('no user for address found')
       }
     }
+    // await contract.methods
+      /*
+        Follow yourself
+        TODO remove this from prod, for testing purposes only
+      */
+      // ._follow(userId, userId)
+      // .send({ from: accounts[0] })
+    const following: string[] = await this.computeFollowing(userId)
+    contract.events.NewTweet(
+      {
+        filter: {
+          userId: following,
+        },
+      },
+      async (err: Error, res?: any) => {
+        // console.log(err, res)
+        const { tweetId } = res.returnValues
+        this.setState({
+          tweets: [...this.state.tweets, await this.fetchTweet(tweetId)],
+        })
+      }
+    )
   }
 
   handleSubmitTweet = async ({ tweetText }: HandleSubmitTweetArgs) => {
