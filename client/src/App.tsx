@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { normalize } from 'normalizr';
+import { tweetSchema } from './schemas';
 import './App.css'
 import Container from './components/container'
 import styled from '@emotion/styled'
@@ -25,7 +27,15 @@ interface IState {
   accounts: any
   contract: any
   username?: string
-  userId?: number
+  userId?: number,
+  store: {
+    result: string[],
+    entities: {
+      tweets: {
+        [key: string]: any
+      }
+    }
+  }
 }
 
 class App extends Component {
@@ -34,6 +44,12 @@ class App extends Component {
     web3: null,
     accounts: null,
     contract: null,
+    store: {
+      result: [],
+      entities: {
+        tweets: {}
+      }
+    }
   }
 
   componentDidMount = async () => {
@@ -67,15 +83,11 @@ class App extends Component {
   }
 
   fetchTweets = async () => {
-    const { contract, accounts } = this.state
+    const { contract, accounts, web3 } = this.state
     const numberOfTweets = await contract.methods._getNumberOfTweets().call()
-    const tweets: any = []
     for (let i = 0; i < numberOfTweets; i++) {
-      // web3.eth.subscribe('LikeCountChange', i)
-
-      tweets.push(await this.fetchTweet(i))
+      await this.fetchTweet(i)
     }
-    this.setState({ tweets })
   }
 
   likeTweet = async (tweetId: string) => {
@@ -85,18 +97,42 @@ class App extends Component {
       .send({ from: accounts[0] })
   }
 
-  fetchTweet = async (tweetId: number): Promise<TweetType> => {
+  fetchTweet = async (tweetId: number) => {
     const { contract } = this.state
     const tweet = await contract.methods.tweets(tweetId).call()
     const { text, authorId, likes } = tweet
     const author = await contract.methods.users(authorId).call()
     const { username } = author
-    return {
+    contract.events.LikeCountChange(
+      {
+        filter: {
+          tweetId: tweetId.toString()
+        },
+      },
+      async (err: Error, res?: any) => {
+        console.log(err, res);
+        const { tweetId, likeCount } = res.returnValues
+        const { store } = this.state;
+        const tweet = store.entities.tweets[tweetId];
+        tweet.likeCount = likeCount;
+        this.setState({store: {...store}});
+      } 
+    );
+
+    const { store } = this.state;
+    const normalized = normalize({
       author: username,
       text,
       likeCount: likes,
       id: tweetId.toString(),
-    }
+    }, tweetSchema);
+    this.setState({store: {...store, ...normalized}});
+    // return {
+    //   author: username,
+    //   text,
+    //   likeCount: likes,
+    //   id: tweetId.toString(),
+    // }
   }
 
   computeFollowing = async (userId: string): Promise<string[]> => {
@@ -146,7 +182,7 @@ class App extends Component {
         },
       },
       async (err: Error, res?: any) => {
-        // console.log(err, res)
+        console.log(err, res)
         const { tweetId } = res.returnValues
         this.setState({
           tweets: [...this.state.tweets, await this.fetchTweet(tweetId)],
@@ -272,8 +308,8 @@ class App extends Component {
               flex-direction: column-reverse;
             `}
           >
-            {this.state.tweets.map((tweet, idx) => (
-              <Tweet tweet={tweet} likeTweet={this.likeTweet} key={idx} />
+            {Object.keys(this.state.store.entities.tweets).map((tweetId: string) => (
+              <Tweet tweet={this.state.store.entities.tweets[tweetId]} likeTweet={this.likeTweet} key={tweetId} />
             ))}
           </div>
           <Button onClick={this.updateTweets}>Refresh</Button>
