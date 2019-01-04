@@ -145,6 +145,7 @@ class App extends Component {
         result = [...result, followingUserId]
       }
     }
+    result.push(userId);
     return result
   }
 
@@ -202,9 +203,11 @@ class App extends Component {
   createAccount = async (username: string) => {
     const { accounts, contract } = this.state
 
-    const userId = await contract.methods
+    await contract.methods
       ._createUser(username)
-      .send({ from: accounts[0] })
+      .send({ from: accounts[0] });
+
+    const userId = await contract.methods.ownerToUser(accounts[0]).call()
 
     this.setState({
       username,
