@@ -66,8 +66,8 @@ class App extends Component {
       // console.log(SolTweet.networks)
       const instance = new web3.eth.Contract(
         SolTweet.abi,
-        // deployedNetwork && deployedNetwork.address
-        '0x47267648c32753395f8d1dbfdc0ffbc86b3433a4'
+        deployedNetwork && deployedNetwork.address
+        // '0x47267648c32753395f8d1dbfdc0ffbc86b3433a4'
       )
 
       // Set web3, accounts, and contract to the state, and then proceed with an
