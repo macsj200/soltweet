@@ -130,6 +130,7 @@ class App extends Component<{}, IState> {
     const normalized = normalize(
       {
         author: username,
+        authorId,
         text,
         likeCount: likes,
         id: tweetId.toString(),
@@ -193,6 +194,10 @@ class App extends Component<{}, IState> {
         console.log('no user for address found')
       }
     }
+    await this.listenToFollowing()
+  }
+
+  listenToFollowing = async () => {
     const following: number[] = await this.computeFollowing()
     this.getContract().events.NewTweet(
       {
@@ -233,6 +238,14 @@ class App extends Component<{}, IState> {
 
   updateTweets = () => {
     this.fetchTweets()
+  }
+
+  followUser = async (userIdToFollow: number) => {
+    const { accounts } = this.state
+    await this.getContract()
+      .methods._follow(this.getUserId(), userIdToFollow)
+      .send({ from: accounts[0] })
+    await this.listenToFollowing()
   }
 
   render() {
@@ -330,6 +343,7 @@ class App extends Component<{}, IState> {
             {Object.keys(this.state.store.entities.tweets).map(
               (tweetId: string) => (
                 <Tweet
+                  followUser={this.followUser}
                   tweet={this.state.store.entities.tweets[tweetId]}
                   likeTweet={this.likeTweet}
                   key={tweetId}

@@ -3,16 +3,18 @@ import React, { SFC } from 'react'
 import { Tweet as TweetType } from '../types/types'
 import { space2X, space1X, spaceHalfX } from '../css-variables'
 import { colors } from '..'
+import Button from './button';
 /** @jsx jsx */
 // WTF emotion?!
 jsx
 
 interface IProps {
+  followUser: (userIdToFollow: number) => void
   likeTweet: Function
   tweet: TweetType
 }
 
-const Tweet: SFC<IProps> = ({ tweet, likeTweet }) => {
+const Tweet: SFC<IProps> = ({ followUser, tweet, likeTweet }) => {
   return (
     <div
       css={css`
@@ -39,14 +41,29 @@ const Tweet: SFC<IProps> = ({ tweet, likeTweet }) => {
         }
       `}
     >
-      <h3
+      <div
         css={css`
-          margin-bottom: ${spaceHalfX};
-          color: ${colors.white};
+          display: flex;
+          flex-direction: row;
         `}
       >
-        {tweet.author}
-      </h3>
+        <h3
+          css={css`
+            margin-bottom: ${spaceHalfX};
+            color: ${colors.white};
+          `}
+        >
+          {tweet.author}
+        </h3>
+        <Button
+          onClick={() => {
+            console.log(`follow ${tweet.authorId}`)
+            followUser(tweet.authorId)
+          }}
+        >
+          Follow
+        </Button>
+      </div>
       <p>{tweet.text}</p>
       <p>Like Count: {tweet.likeCount}</p>
       <p onClick={() => likeTweet(tweet.id)}>Like</p>
