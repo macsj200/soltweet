@@ -8,6 +8,7 @@
     "@types/react": "^16.7.18",
     "@types/react-dom": "^16.0.11",
     "font-awesome": "^4.7.0",
+    "normalizr": "^3.3.0",
     "react": "^16.7.0",
     "react-dom": "^16.6.3",
     "react-scripts": "2.1.1",
@@ -19,7 +20,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prettier": "prettier --write \"**/*.{js,jsx,json,ts,tsx}\""
+    "prettier": "prettier --write \"**/*.{js,jsx,json,ts,tsx}\"",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -31,6 +34,8 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "gh-pages": "^2.0.1",
     "prettier": "1.15.3"
-  }
+  },
+  "homepage": "http://insghost.github.io/soltweet"
 }
