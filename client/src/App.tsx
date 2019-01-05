@@ -13,7 +13,7 @@ import {
   NewTweetResult,
 } from './types/types'
 import SolTweet from './contracts/SolTweet.json'
-import getWeb3 from './utils/getWeb3'
+import { init } from './utils/init'
 import CreateAccount from './components/create-account'
 import { space2X, space1X, space4X, mq } from './css-variables'
 import { colors } from '.'
@@ -42,7 +42,7 @@ interface IState {
   }
 }
 
-class App extends Component {
+class App extends Component<{}, IState> {
   state: IState = {
     tweets: [],
     web3: null,
@@ -56,34 +56,11 @@ class App extends Component {
   }
 
   componentDidMount = async () => {
-    try {
-      // Get network provider and web3 instance.
-      const web3 = await getWeb3()
-
-      // Use web3 to get the user's accounts.
-      const accounts = await web3.eth.getAccounts()
-
-      // Get the contract instance.
-      const networkId = await web3.eth.net.getId()
-      const deployedNetwork = (SolTweet as any).networks[networkId]
-
-      const instance = new web3.eth.Contract(
-        SolTweet.abi,
-        deployedNetwork && deployedNetwork.address
-        // '0x47267648c32753395f8d1dbfdc0ffbc86b3433a4'
-      )
-
-      // Set web3, accounts, and contract to the state, and then proceed with an
-      // example of interacting with the contract's methods.
-      this.setState({ web3, accounts, contract: instance })
-      this.setup()
-    } catch (error) {
-      // Catch any errors for any of the above operations.
-      alert(
-        `Failed to load web3, accounts, or contract Check console for details.`
-      )
-      console.error(error)
-    }
+    await init.bind(this)({
+      compiledContract: SolTweet,
+      // For local dev, comment out contractAddress
+      contractAddress: '0x47267648c32753395f8d1dbfdc0ffbc86b3433a4',
+    })
   }
 
   getContract = () => {
@@ -132,7 +109,6 @@ class App extends Component {
   }
 
   fetchTweet = async (tweetId: number) => {
-    const { contract } = this.state
     const tweet = await this.getContract()
       .methods.tweets(tweetId)
       .call()
@@ -191,13 +167,11 @@ class App extends Component {
       return
     }
     const { tweetId } = res.returnValues
-    this.setState({
-      tweets: [...this.state.tweets, await this.fetchTweet(tweetId)],
-    })
+    await this.fetchTweet(tweetId)
   }
 
   setup = async () => {
-    const { accounts, contract } = this.state
+    const { accounts } = this.state
     this.fetchTweets()
     const userHasAccount = await this.getContract()
       .methods.ownerHasAccount(accounts[0])
@@ -231,7 +205,7 @@ class App extends Component {
   }
 
   handleSubmitTweet = async ({ tweetText }: HandleSubmitTweetArgs) => {
-    const { accounts, contract, username } = this.state
+    const { accounts } = this.state
 
     const userId = this.getUserId()
 
@@ -241,7 +215,7 @@ class App extends Component {
   }
 
   createAccount = async (username: string) => {
-    const { accounts, contract } = this.state
+    const { accounts } = this.state
 
     await this.getContract()
       .methods._createUser(username)
