@@ -90,6 +90,8 @@ contract SolTweet {
 
     function _unFollow(uint _userId, uint _userIdToUnFollow) public {
         require(userToOwner[_userId] == msg.sender, "unauthorized sender");
+        require(followingMapping[_userId][_userIdToUnFollow], "user not following");
+
         //check that the users is already following
         // require(following[_userId] == _userIdToUnFollow, "sender is not following");
         

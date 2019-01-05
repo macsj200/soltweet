@@ -49,6 +49,7 @@ export interface SolTweetContract extends Contract {
     ownerToUser: (address: address) => any
     users: (userId: number) => any
     _follow: (userId: number, _userIdToFollow: number) => any
+    _unFollow: (userId: number, _userIdToFollow: number) => any
     _createTweet: (userId: number, tweetText: string) => any
     _createUser: (username: string) => any
     _getFollowingMappingKeys: (userId: number) => any

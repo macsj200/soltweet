@@ -10,11 +10,12 @@ jsx
 
 interface IProps {
   followUser: (userIdToFollow: number) => void
+  unFollowUser: (userIdToUnFollow: number) => void
   likeTweet: Function
   tweet: TweetType
 }
 
-const Tweet: SFC<IProps> = ({ followUser, tweet, likeTweet }) => {
+const Tweet: SFC<IProps> = ({ followUser, unFollowUser, tweet, likeTweet }) => {
   return (
     <div
       css={css`
@@ -62,6 +63,14 @@ const Tweet: SFC<IProps> = ({ followUser, tweet, likeTweet }) => {
           }}
         >
           Follow
+        </Button>
+        <Button
+          onClick={() => {
+            console.log(`un follow ${tweet.authorId}`)
+            unFollowUser(tweet.authorId)
+          }}
+        >
+          Un Follow
         </Button>
       </div>
       <p>{tweet.text}</p>

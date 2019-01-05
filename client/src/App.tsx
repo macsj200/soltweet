@@ -59,7 +59,7 @@ class App extends Component<{}, IState> {
     await init.bind(this)({
       compiledContract: SolTweet,
       // For local dev, comment out contractAddress
-      contractAddress: '0x47267648c32753395f8d1dbfdc0ffbc86b3433a4',
+      // contractAddress: '0x47267648c32753395f8d1dbfdc0ffbc86b3433a4',
     })
   }
 
@@ -193,8 +193,8 @@ class App extends Component<{}, IState> {
       } catch (err) {
         console.log('no user for address found')
       }
+      await this.listenToFollowing()
     }
-    await this.listenToFollowing()
   }
 
   listenToFollowing = async () => {
@@ -244,6 +244,14 @@ class App extends Component<{}, IState> {
     const { accounts } = this.state
     await this.getContract()
       .methods._follow(this.getUserId(), userIdToFollow)
+      .send({ from: accounts[0] })
+    await this.listenToFollowing()
+  }
+
+  unFollowUser = async (userIdToUnFollow: number) => {
+    const { accounts } = this.state
+    await this.getContract()
+      .methods._unFollow(this.getUserId(), userIdToUnFollow)
       .send({ from: accounts[0] })
     await this.listenToFollowing()
   }
@@ -344,6 +352,7 @@ class App extends Component<{}, IState> {
               (tweetId: string) => (
                 <Tweet
                   followUser={this.followUser}
+                  unFollowUser={this.unFollowUser}
                   tweet={this.state.store.entities.tweets[tweetId]}
                   likeTweet={this.likeTweet}
                   key={tweetId}
