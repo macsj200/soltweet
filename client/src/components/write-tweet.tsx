@@ -2,7 +2,7 @@ import React, { SFC, ChangeEvent } from 'react'
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core'
 import Button from './button'
-import { space2X, space1X } from '../css-variables';
+import { space2X, space1X } from '../css-variables'
 // WTF emotion?!
 jsx
 

@@ -1,13 +1,17 @@
 import React, { Component } from 'react'
-import { normalize } from 'normalizr';
-import { tweetSchema } from './schemas';
+import { normalize } from 'normalizr'
+import { tweetSchema } from './schemas'
 import './App.css'
 import Container from './components/container'
-import styled from '@emotion/styled'
 import { jsx, css, Global } from '@emotion/core'
 import Tweet from './components/tweet'
 import WriteTweet from './components/write-tweet'
-import { Tweet as TweetType } from './types/types'
+import {
+  Tweet as TweetType,
+  LikeCountChangeResult,
+  SolTweetContract,
+  NewTweetResult,
+} from './types/types'
 import SolTweet from './contracts/SolTweet.json'
 import getWeb3 from './utils/getWeb3'
 import CreateAccount from './components/create-account'
@@ -25,14 +29,14 @@ interface IState {
   tweets: TweetType[]
   web3: any
   accounts: any
-  contract: any
+  contract?: SolTweetContract
   username?: string
-  userId?: number,
+  userId?: number
   store: {
-    result: string[],
+    result: string[]
     entities: {
       tweets: {
-        [key: string]: any
+        [key: string]: TweetType
       }
     }
   }
@@ -43,13 +47,12 @@ class App extends Component {
     tweets: [],
     web3: null,
     accounts: null,
-    contract: null,
     store: {
       result: [],
       entities: {
-        tweets: {}
-      }
-    }
+        tweets: {},
+      },
+    },
   }
 
   componentDidMount = async () => {
@@ -63,7 +66,7 @@ class App extends Component {
       // Get the contract instance.
       const networkId = await web3.eth.net.getId()
       const deployedNetwork = (SolTweet as any).networks[networkId]
-      // console.log(SolTweet.networks)
+
       const instance = new web3.eth.Contract(
         SolTweet.abi,
         deployedNetwork && deployedNetwork.address
@@ -77,85 +80,136 @@ class App extends Component {
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
-        `Failed to load web3, accounts, or contract. Check console for details.`
+        `Failed to load web3, accounts, or contract Check console for details.`
       )
       console.error(error)
     }
   }
 
+  getContract = () => {
+    const { contract } = this.state
+    if (!contract) {
+      throw new Error('contract not initialized')
+    }
+    return contract
+  }
+
+  getUserId = () => {
+    const { userId } = this.state
+    if (!userId) {
+      throw new Error('not logged in')
+    }
+    return userId
+  }
+
   fetchTweets = async () => {
-    const { contract, accounts, web3 } = this.state
-    const numberOfTweets = await contract.methods._getNumberOfTweets().call()
+    const { contract } = this.state
+    const numberOfTweets = await this.getContract()
+      .methods._getNumberOfTweets()
+      .call()
     for (let i = 0; i < numberOfTweets; i++) {
       await this.fetchTweet(i)
     }
   }
 
-  likeTweet = async (tweetId: string) => {
-    const { contract, accounts } = this.state
-    await contract.methods
-      ._likeTweet(this.state.userId, tweetId)
+  likeTweet = async (tweetId: number) => {
+    const { accounts, contract } = this.state
+    await this.getContract()
+      .methods._likeTweet(this.getUserId(), tweetId)
       .send({ from: accounts[0] })
+  }
+
+  handleLikeCountChange = async (err: Error, res?: LikeCountChangeResult) => {
+    if (err || !res) {
+      // TODO implement an error toast
+      return
+    }
+    const { likeCount, tweetId } = res.returnValues
+    const { store } = this.state
+    const tweet = store.entities.tweets[tweetId]
+    tweet.likeCount = likeCount
+    this.setState({ store: { ...store } })
   }
 
   fetchTweet = async (tweetId: number) => {
     const { contract } = this.state
-    const tweet = await contract.methods.tweets(tweetId).call()
+    const tweet = await this.getContract()
+      .methods.tweets(tweetId)
+      .call()
     const { text, authorId, likes } = tweet
-    const author = await contract.methods.users(authorId).call()
+    const author = await this.getContract()
+      .methods.users(authorId)
+      .call()
     const { username } = author
-    contract.events.LikeCountChange(
+    this.getContract().events.LikeCountChange(
       {
         filter: {
-          tweetId: tweetId.toString()
+          tweetId: tweetId.toString(),
         },
       },
-      async (err: Error, res?: any) => {
-        console.log(err, res);
-        const { tweetId, likeCount } = res.returnValues
-        const { store } = this.state;
-        const tweet = store.entities.tweets[tweetId];
-        tweet.likeCount = likeCount;
-        this.setState({store: {...store}});
-      } 
-    );
+      this.handleLikeCountChange
+    )
 
-    
-    const { store } = this.state;
-    const normalized = normalize({
-      author: username,
-      text,
-      likeCount: likes,
-      id: tweetId.toString(),
-    }, tweetSchema);
-    store.entities.tweets = {...store.entities.tweets, ...normalized.entities.tweets};
-    this.setState({store: store});
+    const { store } = this.state
+    const normalized = normalize(
+      {
+        author: username,
+        text,
+        likeCount: likes,
+        id: tweetId.toString(),
+      },
+      tweetSchema
+    )
+    store.entities.tweets = {
+      ...store.entities.tweets,
+      ...normalized.entities.tweets,
+    }
+    this.setState({ store: store })
   }
 
-  computeFollowing = async (userId: string): Promise<string[]> => {
-    const { accounts, contract } = this.state
-    const keys = await contract.methods._getFollowingMappingKeys(userId).call()
-    let result: string[] = []
-    for(let followingUserId of keys) {
-      const isFollowing = await contract.methods.followingMapping(userId, followingUserId).call()
+  computeFollowing = async (): Promise<number[]> => {
+    const userId = this.getUserId()
+    const keys = await this.getContract()
+      .methods._getFollowingMappingKeys(userId)
+      .call()
+    let result: number[] = []
+    for (let followingUserId of keys) {
+      const isFollowing = await this.getContract()
+        .methods.followingMapping(userId, followingUserId)
+        .call()
       if (isFollowing) {
         result = [...result, followingUserId]
       }
     }
-    result.push(userId);
+    result.push(userId)
     return result
+  }
+
+  handleNewTweet = async (err: Error, res?: NewTweetResult) => {
+    if (err || !res) {
+      // TODO error toast
+      return
+    }
+    const { tweetId } = res.returnValues
+    this.setState({
+      tweets: [...this.state.tweets, await this.fetchTweet(tweetId)],
+    })
   }
 
   setup = async () => {
     const { accounts, contract } = this.state
     this.fetchTweets()
-    const userHasAccount = await contract.methods
-      .ownerHasAccount(accounts[0])
+    const userHasAccount = await this.getContract()
+      .methods.ownerHasAccount(accounts[0])
       .call()
-    const userId = await contract.methods.ownerToUser(accounts[0]).call()
+    const userId = await this.getContract()
+      .methods.ownerToUser(accounts[0])
+      .call()
     if (userHasAccount && userId) {
       try {
-        const user = await contract.methods.users(userId).call()
+        const user = await this.getContract()
+          .methods.users(userId)
+          .call()
         const { username } = user
         this.setState({
           userId,
@@ -165,46 +219,37 @@ class App extends Component {
         console.log('no user for address found')
       }
     }
-    // await contract.methods
-      /*
-        Follow yourself
-        TODO remove this from prod, for testing purposes only
-      */
-      // ._follow(userId, userId)
-      // .send({ from: accounts[0] })
-    const following: string[] = await this.computeFollowing(userId)
-    contract.events.NewTweet(
+    const following: number[] = await this.computeFollowing()
+    this.getContract().events.NewTweet(
       {
         filter: {
           userId: following,
         },
       },
-      async (err: Error, res?: any) => {
-        console.log(err, res)
-        const { tweetId } = res.returnValues
-        this.setState({
-          tweets: [...this.state.tweets, await this.fetchTweet(tweetId)],
-        })
-      }
+      this.handleNewTweet
     )
   }
 
   handleSubmitTweet = async ({ tweetText }: HandleSubmitTweetArgs) => {
-    const { accounts, contract, username, userId } = this.state
+    const { accounts, contract, username } = this.state
 
-    await contract.methods
-      ._createTweet(userId, tweetText)
+    const userId = this.getUserId()
+
+    await this.getContract()
+      .methods._createTweet(userId, tweetText)
       .send({ from: accounts[0] })
   }
 
   createAccount = async (username: string) => {
     const { accounts, contract } = this.state
 
-    await contract.methods
-      ._createUser(username)
-      .send({ from: accounts[0] });
+    await this.getContract()
+      .methods._createUser(username)
+      .send({ from: accounts[0] })
 
-    const userId = await contract.methods.ownerToUser(accounts[0]).call()
+    const userId = await this.getContract()
+      .methods.ownerToUser(accounts[0])
+      .call()
 
     this.setState({
       username,
@@ -217,7 +262,7 @@ class App extends Component {
   }
 
   render() {
-    const { userId, username } = this.state
+    const { username, userId } = this.state
     return (
       <Container>
         <Global
@@ -308,9 +353,15 @@ class App extends Component {
               flex-direction: column-reverse;
             `}
           >
-            {Object.keys(this.state.store.entities.tweets).map((tweetId: string) => (
-              <Tweet tweet={this.state.store.entities.tweets[tweetId]} likeTweet={this.likeTweet} key={tweetId} />
-            ))}
+            {Object.keys(this.state.store.entities.tweets).map(
+              (tweetId: string) => (
+                <Tweet
+                  tweet={this.state.store.entities.tweets[tweetId]}
+                  likeTweet={this.likeTweet}
+                  key={tweetId}
+                />
+              )
+            )}
           </div>
           <Button onClick={this.updateTweets}>Refresh</Button>
         </div>
