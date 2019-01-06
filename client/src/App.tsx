@@ -40,6 +40,7 @@ interface IState {
       }
     }
   }
+  following: number[]
 }
 
 class App extends Component<{}, IState> {
@@ -53,13 +54,14 @@ class App extends Component<{}, IState> {
         tweets: {},
       },
     },
+    following: [],
   }
 
   componentDidMount = async () => {
     await init.bind(this)({
       compiledContract: SolTweet,
       // For local dev, comment out contractAddress
-      // contractAddress: '0x47267648c32753395f8d1dbfdc0ffbc86b3433a4',
+      contractAddress: '0x47267648c32753395f8d1dbfdc0ffbc86b3433a4',
     })
   }
 
@@ -144,7 +146,7 @@ class App extends Component<{}, IState> {
     this.setState({ store: store })
   }
 
-  computeFollowing = async (): Promise<number[]> => {
+  computeFollowing = async () => {
     const userId = this.getUserId()
     const keys = await this.getContract()
       .methods._getFollowingMappingKeys(userId)
@@ -159,7 +161,7 @@ class App extends Component<{}, IState> {
       }
     }
     result.push(userId)
-    return result
+    this.setState({ following: result })
   }
 
   handleNewTweet = async (err: Error, res?: NewTweetResult) => {
@@ -198,7 +200,8 @@ class App extends Component<{}, IState> {
   }
 
   listenToFollowing = async () => {
-    const following: number[] = await this.computeFollowing()
+    await this.computeFollowing()
+    const { following } = this.state
     this.getContract().events.NewTweet(
       {
         filter: {
@@ -356,6 +359,8 @@ class App extends Component<{}, IState> {
                   tweet={this.state.store.entities.tweets[tweetId]}
                   likeTweet={this.likeTweet}
                   key={tweetId}
+                  userId={userId}
+                  userIsFollowing={this.state.following.indexOf(this.state.store.entities.tweets[tweetId].authorId) !== -1}
                 />
               )
             )}

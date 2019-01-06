@@ -13,9 +13,11 @@ interface IProps {
   unFollowUser: (userIdToUnFollow: number) => void
   likeTweet: Function
   tweet: TweetType
+  userId?: number
+  userIsFollowing: boolean
 }
 
-const Tweet: SFC<IProps> = ({ followUser, unFollowUser, tweet, likeTweet }) => {
+const Tweet: SFC<IProps> = ({ followUser, unFollowUser, tweet, likeTweet, userId, userIsFollowing }) => {
   return (
     <div
       css={css`
@@ -56,22 +58,29 @@ const Tweet: SFC<IProps> = ({ followUser, unFollowUser, tweet, likeTweet }) => {
         >
           {tweet.author}
         </h3>
-        <Button
-          onClick={() => {
-            console.log(`follow ${tweet.authorId}`)
-            followUser(tweet.authorId)
-          }}
-        >
-          Follow
-        </Button>
-        <Button
-          onClick={() => {
-            console.log(`un follow ${tweet.authorId}`)
-            unFollowUser(tweet.authorId)
-          }}
-        >
-          Un Follow
-        </Button>
+        {tweet.authorId !== userId && <>
+          {
+            userIsFollowing ? (
+              <Button
+                onClick={() => {
+                  console.log(`un follow ${tweet.authorId}`)
+                  unFollowUser(tweet.authorId)
+                }}
+              >
+                Un Follow
+              </Button>
+            ) : (
+              <Button
+                onClick={() => {
+                  console.log(`follow ${tweet.authorId}`)
+                  followUser(tweet.authorId)
+                }}
+              >
+                Follow
+              </Button>
+            )
+          }
+        </>}
       </div>
       <p>{tweet.text}</p>
       <p>Like Count: {tweet.likeCount}</p>
