@@ -32,8 +32,6 @@ const Button: SFC<IProps> = ({ children, onClick }) => {
         color: white;
         padding: 0.75rem 0;
         min-width: 120px;
-        margin-left: auto;
-        margin-right: auto;
         transition: all 100ms ease-in;
 
         &:hover {

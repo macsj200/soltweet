@@ -365,7 +365,6 @@ class App extends Component<{}, IState> {
               )
             )}
           </div>
-          <Button onClick={this.updateTweets}>Refresh</Button>
         </div>
       </Container>
     )

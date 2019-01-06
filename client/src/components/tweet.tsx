@@ -47,7 +47,7 @@ const Tweet: SFC<IProps> = ({ followUser, unFollowUser, tweet, likeTweet, userId
       <div
         css={css`
           display: flex;
-          flex-direction: row;
+          flex-direction: column;
         `}
       >
         <h3
@@ -61,23 +61,21 @@ const Tweet: SFC<IProps> = ({ followUser, unFollowUser, tweet, likeTweet, userId
         {tweet.authorId !== userId && <>
           {
             userIsFollowing ? (
-              <Button
+              <span
                 onClick={() => {
-                  console.log(`un follow ${tweet.authorId}`)
                   unFollowUser(tweet.authorId)
                 }}
               >
                 Un Follow
-              </Button>
+              </span>
             ) : (
-              <Button
+              <span
                 onClick={() => {
-                  console.log(`follow ${tweet.authorId}`)
                   followUser(tweet.authorId)
                 }}
               >
                 Follow
-              </Button>
+              </span>
             )
           }
         </>}
