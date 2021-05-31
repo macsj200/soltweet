@@ -360,7 +360,11 @@ class App extends Component<{}, IState> {
                   likeTweet={this.likeTweet}
                   key={tweetId}
                   userId={userId}
-                  userIsFollowing={this.state.following.indexOf(this.state.store.entities.tweets[tweetId].authorId) !== -1}
+                  userIsFollowing={
+                    this.state.following.indexOf(
+                      this.state.store.entities.tweets[tweetId].authorId
+                    ) !== -1
+                  }
                 />
               )
             )}
