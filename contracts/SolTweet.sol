@@ -1,4 +1,5 @@
-pragma solidity ^0.5.16;
+pragma solidity ^0.7.0;
+pragma experimental ABIEncoderV2;
 
 import "./SafeMath.sol";
 
@@ -46,7 +47,8 @@ contract SolTweet {
         User memory newUser;
         newUser.username = _username;
         newUser.followerCount = 0;
-        uint id = (users.push(newUser)).sub(1);
+        users.push(newUser);
+        uint id = users.length - 1;
         userToOwner[id] = msg.sender;
         ownerToUser[msg.sender] = id;
         ownerHasAccount[msg.sender] = true;
@@ -56,7 +58,8 @@ contract SolTweet {
 
     function _createTweet(uint _userId, string memory _tweetText) public returns (uint) {
         require(userToOwner[_userId] == msg.sender, "unauthorized sender");
-        uint id = (tweets.push(Tweet(_tweetText, 0, _userId))).sub(1);
+        tweets.push(Tweet(_tweetText, 0, _userId));
+        uint id = tweets.length - 1;
         tweetToUserId[id] = _userId;
         // notify followers
 
