@@ -9,7 +9,7 @@ contract SolTweet {
     using SafeMath for uint256;
 
     event NewUser(uint userId);
-    event NewTweet(uint tweetId, uint indexed userId);
+    event NewTweet(uint tweetId, uint indexed userId, string tweetText);
     event LikeCountChange(uint tweetId, uint likeCount);
 
     mapping (uint => address) userToOwner;
@@ -62,7 +62,7 @@ contract SolTweet {
 
         //look up all the users follwers and let them know about the new tweet
         // following[];
-        emit NewTweet(id, _userId);
+        emit NewTweet(id, _userId, _tweetText);
         return id;
     }
 
