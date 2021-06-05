@@ -61,7 +61,7 @@ class App extends Component<{}, IState> {
     await init.bind(this)({
       compiledContract: SolTweet,
       // For local dev, comment out contractAddress
-      contractAddress: '0x47267648c32753395f8d1dbfdc0ffbc86b3433a4',
+      contractAddress: '0x4E00d91f7FAAedbF000Bf5e82600f9B07975d926',
     })
   }
 
